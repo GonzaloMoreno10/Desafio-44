@@ -10,13 +10,21 @@
         <tr>
             <th>title</th>
             <th>price</th>
-            <th>thumbnail</th>
+            <th>date</th>
+            <th>code</th>
+            <th>stock</th>
+            <th>description</th>
+            <th>image</th>
         </tr>
         {{#each products}}
         <tr>
             <td>{{title}}</td>
             <td>{{price}}</td>
-            <td><img src="{{thumbnail}}"width="50px" height="50px"></td>
+            <td>{{date}}</td>
+            <td>{{code}}</td>
+            <td>{{stock}}</td>
+            <td>{{description}}</td>
+            <td><img src="{{image}}"width="50px" height="50px"></td>
         </tr>
         {{/each}}
     </table>
