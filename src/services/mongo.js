@@ -1,5 +1,5 @@
 let mongoose = require('mongoose')
-export const con = mongoose.connect('mongodb://localhost/notes-db-app')
+export const con = mongoose.connect('mongodb://localhost/ecommerce')
 .then(db=>{
     console.log("db is conected")
 })

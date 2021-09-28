@@ -7,7 +7,7 @@ exports.con = void 0;
 
 var mongoose = require('mongoose');
 
-var con = mongoose.connect('mongodb://localhost/notes-db-app').then(db => {
+var con = mongoose.connect('mongodb://localhost/ecommerce').then(db => {
   console.log("db is conected");
 }).catch(err => {
   console.error(err);

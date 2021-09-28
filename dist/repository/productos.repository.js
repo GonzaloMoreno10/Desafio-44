@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.productos = void 0;
+exports.productosRepository = void 0;
 
 var _database = require("../services/database");
 
@@ -60,5 +60,5 @@ class ProductoRepository {
 
 }
 
-var productos = new ProductoRepository();
-exports.productos = productos;
+var productosRepository = new ProductoRepository();
+exports.productosRepository = productosRepository;

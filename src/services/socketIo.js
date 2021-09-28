@@ -1,58 +1,93 @@
-import { Server } from "socket.io";
-import Producto from "../models/Producto.js";
-import Mensaje from "../models/Mensaje.js";
-import { productos as prodRepo} from '../repository/productos.repository'
-import {mensajes as mensajeRepo} from '../repository/mensajes.repository'
+import {Server} from 'socket.io';
+import Producto from '../models/Producto.js';
+import Mensaje from '../models/Mensaje.js';
+import {productosRepository} from '../repository/productos.repository';
+import {mensajes as mensajeRepo} from '../repository/mensajes.repository';
+import {normalize, schema} from 'normalizr';
+let util = require ('util');
 
+export const initIo = async server => {
+  let prods = await productosRepository.getAllproductos ();
+  // let mensajes = await getMensajes(archMessg);
+  const io = new Server (server);
+  io.on ('connection', async socket => {
+    const author = new schema.Entity ('author',{},  {idAttribute: 'id'});
 
-export const initIo = async(server)=> {
-   let prods = await prodRepo.getAllproductos()
-   // let mensajes = await getMensajes(archMessg);
-    const io = new Server(server)
-    io.on("connection", async socket => {
-        
+    const msg = new schema.Entity (
+      'mensajes',
+      {
+        author: author,
+      },
+      {
+        idAttribute: '_id',
+      }
+    );
 
-        socket.on("mensajes",async(data)=>{
-            console.log("Me llego un Mensaje y lo voy a guardar")
-            let email = data.email;
-            let fecha = data.fecha;
-            let texto = data.texto
-            let mensaje = new Mensaje({email,fecha,texto});
-            if(mensaje){
-                await mensajeRepo.createMensaje(mensaje)
-            }
-            let mensajes = await mensajeRepo.getAllMensajes();
-            io.emit('mensajes', mensajes);
-        })
-        socket.on("productos", async (data) => {
-            console.log("Me llego un mensaje y lo llevo al arreglo")
-            console.log(data);
-            let title = data.title;
-            let price = data.price;
-            let thumbnail = data.thumbnail;
-            let produc = new Producto({title,price,thumbnail});
-            if (produc) {
-                let prod = await prodRepo.createProducto(produc)
+    const msgSchema = new schema.Array (msg);
 
-                if(prod){
-                    prods = await prodRepo.getAllproductos();
-                    io.emit('productos', prods);
-                }
-            }
-            
-           
-        });
+    socket.on ('mensajes', async data => {
+      console.log ('Me llego un Mensaje y lo voy a guardar');
+      let mensaje = new Mensaje ();
+      mensaje.author.id = data.author.email;
+      mensaje.author.nombre = data.author.nombre;
+      mensaje.author.apellido = data.author.apellido;
+      mensaje.author.edad = data.author.edad;
+      mensaje.author.alias = data.author.alias;
+      mensaje.author.avatar = data.author.avatar;
+      mensaje.texto = data.texto;
+      mensaje.fecha = data.fecha;
+      if (mensaje) {
+        await mensajeRepo.createMensaje (mensaje);
+      }
+      
+      let mensajes = (await mensajeRepo.getAllMensajes ()).map (data => ({
+        _id: data._id,
+        author: data.author,
+        text: data.texto,
+        avatar:data.author.avatar,
+        date:data.fecha
+      }));
 
-        //Emito los mensajes 
-        socket.on('askProducts', async(data) => {
-            let prods = await prodRepo.getAllproductos();
-            socket.emit('productos', prods);
-        });
-
-        socket.on('askMensajes',async (data) => {
-            let mensajes = await mensajeRepo.getAllMensajes();
-            socket.emit('mensajes', mensajes);
-        });
-
+      let msjNormalize = normalize (mensajes, msgSchema);
+      console.log (util.inspect (msjNormalize, true, 7, true));
+      io.emit ('mensajes', msjNormalize);
     });
-}
+    socket.on ('productos', async data => {
+      let produc = new Producto ();
+      produc.title = data.title;
+      produc.price = data.price;
+      produc.date = data.date;
+      produc.code = data.code;
+      (produc.stock = data.stock), (produc.description = data.description);
+      produc.image = data.image;
+      if (produc) {
+        let prod = await productosRepository.createProducto (produc);
+
+        if (prod) {
+          prods = await productosRepository.getAllproductos ();
+          io.emit ('productos', prods);
+        }
+      }
+    });
+
+    //Emito los mensajes
+    socket.on ('askProducts', async data => {
+      let prods = await productosRepository.getAllproductos ();
+      socket.emit ('productos', prods);
+    });
+
+    socket.on ('askMensajes', async data => {
+      let mensajes = (await mensajeRepo.getAllMensajes ()).map (data => ({
+        _id: data._id,
+        author: data.author,
+        text: data.texto,
+        avatar:data.author.avatar,
+        date:data.fecha
+      }));
+
+      let msjNormalize = normalize (mensajes, msgSchema);
+      console.log (util.inspect (msjNormalize, true, 7, true));
+      socket.emit ('mensajes', msjNormalize);
+    });
+  });
+};

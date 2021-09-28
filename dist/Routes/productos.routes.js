@@ -11,8 +11,6 @@ var _productos = require("../controllers/productos.controller");
 
 var _productos2 = require("../repository/productos.repository");
 
-var _fakerProducts = require("../faker/faker.products.js");
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -27,7 +25,7 @@ Router.get("/listar", _productos.productoController.getAllproductos);
 Router.get("/listar/:id", _productos.productoController.getProductosByid);
 Router.get("/vista", /*#__PURE__*/function () {
   var _ref = _asyncToGenerator(function* (req, res) {
-    var products = yield _productos2.productos.getAllproductos();
+    var products = yield _productos2.productosRepository.getAllproductos();
     res.render("products/allProducts", {
       products
     });
@@ -42,7 +40,7 @@ Router.get("/new", (req, res) => {
 });
 Router.get("/vista-test/:cant?", /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator(function* (req, res) {
-    var products = yield _productos2.productos.getRandomProductos(req.params.cant);
+    var products = yield _productos2.productosRepository.getRandomProductos(req.params.cant);
     res.render("products/allProducts", {
       products
     });
@@ -57,7 +55,10 @@ Router.delete("/eliminar/:id", _productos.productoController.deleteProductos);
 Router.put("/actualizar/:id", _productos.productoController.updateProductos);
 Router.get("/sala-products", /*#__PURE__*/function () {
   var _ref3 = _asyncToGenerator(function* (req, res) {
-    res.render('products/sala');
+    var products = yield _productos2.productosRepository.getAllproductos();
+    res.render('products/sala', {
+      products
+    });
   });
 
   return function (_x5, _x6) {

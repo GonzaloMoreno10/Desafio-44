@@ -20,7 +20,7 @@ var tableName = 'productos';
 class ProductosController {
   getAllproductos(req, res) {
     return _asyncToGenerator(function* () {
-      var items = yield _productos.productos.getAllproductos();
+      var items = yield _productos.productosRepository.getAllproductos();
       res.json({
         data: items
       });
@@ -32,7 +32,7 @@ class ProductosController {
       var {
         id
       } = req.params;
-      var item = yield _productos.productos.getProductosById(id);
+      var item = yield _productos.productosRepository.getProductosById(id);
 
       if (!item) {
         return res.status(404).json({
@@ -51,15 +51,24 @@ class ProductosController {
       var {
         title,
         price,
-        thumbnail
+        description,
+        image,
+        stock,
+        code
       } = req.body;
+      var date = new Date();
       var producto = new _Producto.default({
         title,
         price,
-        thumbnail
+        date,
+        stock,
+        code,
+        description,
+        image
       });
-      var id = yield _productos.productos.createProducto(producto);
-      var newItem = yield _productos.productos.getAllproductos(id);
+      console.log(producto);
+      var id = yield _productos.productosRepository.createProducto(producto);
+      var newItem = yield _productos.productosRepository.getAllproductos(id);
       res.json({
         data: newItem
       });
@@ -83,7 +92,7 @@ class ProductosController {
         });
       }
 
-      var productoOriginal = yield _productos.productos.getProductosById(id); //console.log(productoOriginal)
+      var productoOriginal = yield productos.getProductosById(id); //console.log(productoOriginal)
 
       if (!productoOriginal) {
         return res.status(404).json({
@@ -96,8 +105,8 @@ class ProductosController {
         price,
         thumbnail
       };
-      yield _productos.productos.update(id, prod);
-      var item = yield _productos.productos.getProductosById(id);
+      yield _productos.productosRepository.update(id, prod);
+      var item = yield _productos.productosRepository.getProductosById(id);
       res.json({
         msg: 'Producto Actualizado',
         item
@@ -110,7 +119,8 @@ class ProductosController {
       var {
         id
       } = req.params;
-      var producto = yield _productos.productos.delete(id);
+      console.log(id);
+      var producto = yield _productos.productosRepository.delete(id);
 
       if (!producto) {
         return res.status(404).json({
@@ -118,7 +128,7 @@ class ProductosController {
         });
       }
 
-      yield _productos.productos.delete(id);
+      yield _productos.productosRepository.delete(id);
       res.json({
         msg: 'Producto eliminado'
       });

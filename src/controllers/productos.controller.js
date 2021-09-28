@@ -1,11 +1,11 @@
 import Producto from '../models/Producto';
-import { productos } from '../repository/productos.repository';
+import { productosRepository } from '../repository/productos.repository';
 
 const tableName = 'productos';
 
 class ProductosController {
     async getAllproductos(req, res) {
-        const items = await productos.getAllproductos();
+        const items = await productosRepository.getAllproductos();
 
         res.json({
             data: items
@@ -16,7 +16,7 @@ class ProductosController {
     async getProductosByid(req, res) {
         const { id } = req.params;
         
-        const item = await  productos.getProductosById(id);
+        const item = await  productosRepository.getProductosById(id);
         if (!item) {
             return res.status(404).json({
                 msg: 'Producto no encontrado'
@@ -28,14 +28,16 @@ class ProductosController {
     }
 
     async createProductos(req, res) {
-        const { title, price, thumbnail } = req.body;
+        const { title, price,description,image,stock,code } = req.body;
+        let date = new Date();
         const producto = new Producto({
-            title, price, thumbnail
+            title, price, date,stock,code,description,image
         })
 
-        const id = await productos.createProducto(producto)
+        console.log(producto);
+        const id = await productosRepository.createProducto(producto)
 
-        const newItem = await productos.getAllproductos(id);
+        const newItem = await productosRepository.getAllproductos(id);
 
         res.json({
             data:newItem
@@ -62,9 +64,9 @@ class ProductosController {
 
         const prod = {title,price,thumbnail};
 
-        await productos.update(id, prod);
+        await productosRepository.update(id, prod);
 
-        const item = await productos.getProductosById(id);
+        const item = await productosRepository.getProductosById(id);
         res.json({
             msg: 'Producto Actualizado',
             item
@@ -74,7 +76,8 @@ class ProductosController {
     async deleteProductos(req,res){
         const { id } = req.params;
 
-        const producto = await productos.delete(id);
+        console.log(id);
+        const producto = await productosRepository.delete(id);
 
         if (!producto) {
             return res.status(404).json({
@@ -82,7 +85,7 @@ class ProductosController {
             })
         }
 
-        await productos.delete(id);
+        await productosRepository.delete(id);
         res.json({
             msg:'Producto eliminado'
         })

@@ -6,17 +6,15 @@ var {
   Schema
 } = mongoose;
 var mensajesSchema = new Schema({
-  email: {
-    type: String,
-    required: true
+  author: {
+    id: String,
+    nombre: String,
+    apellido: String,
+    edad: Number,
+    alias: String,
+    avatar: String
   },
-  fecha: {
-    type: Date,
-    required: true
-  },
-  texto: {
-    type: String,
-    default: Date.now
-  }
+  texto: String,
+  fecha: Date
 });
 module.exports = mongoose.model('mensajes', mensajesSchema);

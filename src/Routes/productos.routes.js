@@ -1,8 +1,7 @@
 import express from "express";
 const Router = express.Router();
 import {productoController} from '../controllers/productos.controller'
-import {productos} from '../repository/productos.repository'
-import {products} from '../faker/faker.products.js'
+import {productosRepository} from '../repository/productos.repository'
 
 
 //Inicializaciones
@@ -14,7 +13,7 @@ Router.get("/listar", productoController.getAllproductos);
 Router.get("/listar/:id", productoController.getProductosByid);
 
 Router.get("/vista", async (req, res) => {
-   let products = await productos.getAllproductos() ;
+   let products = await productosRepository.getAllproductos() ;
    res.render("products/allProducts",{products})
 })
 
@@ -24,7 +23,7 @@ Router.get("/new",(req, res) => {
  })
 
 Router.get("/vista-test/:cant?",async (req,res)=>{
-    let products = await productos.getRandomProductos(req.params.cant)
+    let products = await productosRepository.getRandomProductos(req.params.cant)
     res.render("products/allProducts",{products})
 })
 
@@ -36,7 +35,8 @@ Router.put("/actualizar/:id",productoController.updateProductos)
 
 
 Router.get("/sala-products",async (req, res) => {
-    res.render('products/sala')
+    let products = await productosRepository.getAllproductos() ;
+    res.render('products/sala',{products})
 })
 
 

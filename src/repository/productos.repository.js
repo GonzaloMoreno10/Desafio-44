@@ -1,14 +1,14 @@
 import { mySQLDB } from '../services/database';
-import Producto from '../models/Producto';
+import productos from '../models/Producto';
 import {products} from '../faker/faker.products'
 
 class ProductoRepository {
   async getAllproductos() {
-    return await Producto.find();
+    return await productos.find();
   }
 
   async getProductosById(id) {
-    return await Producto.findById(id,{}).lean();
+    return await productos.findById(id,{}).lean();
   }
 
   async createProducto(producto) {
@@ -16,11 +16,11 @@ class ProductoRepository {
   }
 
   async update(id, producto) {
-    return await Producto.findByIdAndUpdate(id,producto)
+    return await productos.findByIdAndUpdate(id,producto)
   }
 
   async delete(id) {
-    return await Producto.findByIdAndDelete(id);
+    return await productos.findByIdAndDelete(id);
   }
 
   async getRandomProductos(cant){
@@ -34,4 +34,4 @@ class ProductoRepository {
 
 }
 
-export const productos = new ProductoRepository();
+export const productosRepository = new ProductoRepository();
