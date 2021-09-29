@@ -1,0 +1,12 @@
+<div style="text-align: center" class="alert alert-info" role="alert">
+ <h3>Hasta luego {{cookie}}</h3> 
+ <p>Seras redirigido en 5 segundos</p>
+</div>
+<script type="text/javascript">   
+    function Redirect() 
+    {  
+        window.location="/api/users/login"; 
+        
+    } 
+    setTimeout('Redirect()', 5000);   
+</script>

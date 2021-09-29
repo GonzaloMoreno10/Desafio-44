@@ -14,13 +14,13 @@ class UsersController {
     date.setTime(date.getTime() + 60 * 1000);
 
     if (name) {
-      res.cookie('user', name, {
+      res.cookie("user", name, {
         expires: date,
         httpOnly: true
-      }).redirect('/api/productos/vista');
+      }).redirect("/api/productos/vista");
     } else {
       res.send({
-        error: 'set-cookie: falta nombre '
+        error: "set-cookie: falta nombre "
       });
     }
   }
@@ -28,7 +28,7 @@ class UsersController {
   singin(req, res) {}
 
   logout(req, res) {
-    res.clearCookie('user').redirect('/api/users/login');
+    res.redirect("/api/users/logout");
   }
 
 }
