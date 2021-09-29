@@ -1,7 +1,7 @@
 import Producto from '../models/Producto';
 import { productosRepository } from '../repository/productos.repository';
 
-const tableName = 'productos';
+
 
 class ProductosController {
     async getAllproductos(req, res) {
@@ -39,9 +39,7 @@ class ProductosController {
 
         const newItem = await productosRepository.getAllproductos(id);
 
-        res.json({
-            data:newItem
-        })
+        res.redirect('/api/productos/vista')
     }
 
 

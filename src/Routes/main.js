@@ -1,8 +1,11 @@
 import {Router} from 'express';
-import productosController from './productos.routes';
-
+import productoRoute from './productos.routes';
+import userRoute from './users.routes'
+import{auth,authAdmin} from '../middlewares/autenticacion'
 const router = Router();
 
-router.use('/productos',productosController);
+router.use('/productos',productoRoute);
+
+router.use('/users',userRoute)
 
 export default router;

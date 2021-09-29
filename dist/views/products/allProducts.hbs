@@ -1,6 +1,14 @@
-
 {{#if products}}
 <br><br>
+<div class="alert alert-info" role="alert">
+  Bienvenid@ {{cookie}}
+  <form action="/api/users/logout" method="post">
+  <div style="text-align:right">
+      <button type="submit" class="btn btn-primary">Logout</button>
+  </div>
+  
+  </form>
+</div>
 <div class="container-sm">
     <a href="/api/productos/new" class="btn btn-primary">Nuevo Producto <i class="fas fa-plus"></i></a>
 </div>
@@ -33,6 +41,7 @@
         <br><br>
         <h4>No hay productos por aca</h4>
     </div>
-
-    {{/if}}
 </div>
+{{/if}}
+    
+

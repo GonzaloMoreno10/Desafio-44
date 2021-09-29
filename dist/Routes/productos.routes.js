@@ -11,6 +11,8 @@ var _productos = require("../controllers/productos.controller");
 
 var _productos2 = require("../repository/productos.repository");
 
+var _autenticacion = require("../middlewares/autenticacion");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -21,13 +23,16 @@ var Router = _express.default.Router();
 
 //Inicializaciones
 //Rutas
-Router.get("/listar", _productos.productoController.getAllproductos);
+Router.get("/listar", _autenticacion.auth, _productos.productoController.getAllproductos);
 Router.get("/listar/:id", _productos.productoController.getProductosByid);
-Router.get("/vista", /*#__PURE__*/function () {
+Router.get("/vista", _autenticacion.auth, /*#__PURE__*/function () {
   var _ref = _asyncToGenerator(function* (req, res) {
     var products = yield _productos2.productosRepository.getAllproductos();
+    var cookie = req.cookies.user;
+    console.log(cookie);
     res.render("products/allProducts", {
-      products
+      products,
+      cookie
     });
   });
 
@@ -35,10 +40,10 @@ Router.get("/vista", /*#__PURE__*/function () {
     return _ref.apply(this, arguments);
   };
 }());
-Router.get("/new", (req, res) => {
+Router.get("/new", _autenticacion.auth, (req, res) => {
   res.render("products/newProduct");
 });
-Router.get("/vista-test/:cant?", /*#__PURE__*/function () {
+Router.get("/vista-test/:cant?", _autenticacion.auth, /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator(function* (req, res) {
     var products = yield _productos2.productosRepository.getRandomProductos(req.params.cant);
     res.render("products/allProducts", {
@@ -50,10 +55,10 @@ Router.get("/vista-test/:cant?", /*#__PURE__*/function () {
     return _ref2.apply(this, arguments);
   };
 }());
-Router.post("/crear", _productos.productoController.createProductos);
-Router.delete("/eliminar/:id", _productos.productoController.deleteProductos);
-Router.put("/actualizar/:id", _productos.productoController.updateProductos);
-Router.get("/sala-products", /*#__PURE__*/function () {
+Router.post("/crear", _autenticacion.auth, _productos.productoController.createProductos);
+Router.delete("/eliminar/:id", _autenticacion.auth, _productos.productoController.deleteProductos);
+Router.put("/actualizar/:id", _autenticacion.auth, _productos.productoController.updateProductos);
+Router.get("/sala-products", _autenticacion.auth, /*#__PURE__*/function () {
   var _ref3 = _asyncToGenerator(function* (req, res) {
     var products = yield _productos2.productosRepository.getAllproductos();
     res.render('products/sala', {
