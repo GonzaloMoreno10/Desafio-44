@@ -3,10 +3,21 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.auth = void 0;
+exports.authSession = exports.auth = void 0;
 
 var auth = function auth(req, res, next) {
   if (req.cookies.user) {
+    return next();
+  } else {
+    return res.render('users/error');
+  }
+};
+
+exports.auth = auth;
+
+var authSession = function authSession(req, res, next) {
+  if (req.session.user) {
+    req.session.contador++;
     return next();
   } else {
     return res.render('users/error');
@@ -23,4 +34,4 @@ var auth = function auth(req, res, next) {
 }*/
 
 
-exports.auth = auth;
+exports.authSession = authSession;

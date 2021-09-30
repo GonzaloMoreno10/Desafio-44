@@ -23,16 +23,18 @@ var Router = _express.default.Router();
 
 //Inicializaciones
 //Rutas
-Router.get("/listar", _autenticacion.auth, _productos.productoController.getAllproductos);
-Router.get("/listar/:id", _productos.productoController.getProductosByid);
-Router.get("/vista", _autenticacion.auth, /*#__PURE__*/function () {
+Router.get("/listar", _autenticacion.authSession, _productos.productoController.getAllproductos);
+Router.get("/listar/:id", _autenticacion.authSession, _productos.productoController.getProductosByid);
+Router.get("/vista", _autenticacion.authSession, /*#__PURE__*/function () {
   var _ref = _asyncToGenerator(function* (req, res) {
     var products = yield _productos2.productosRepository.getAllproductos();
-    var cookie = req.cookies.user;
-    console.log(cookie);
+    var user = req.session.user;
+    var firstLogin = false;
+    if (req.session.contador == 1) firstLogin = true;
     res.render("products/allProducts", {
       products,
-      cookie
+      user,
+      firstLogin
     });
   });
 
@@ -40,10 +42,10 @@ Router.get("/vista", _autenticacion.auth, /*#__PURE__*/function () {
     return _ref.apply(this, arguments);
   };
 }());
-Router.get("/new", _autenticacion.auth, (req, res) => {
+Router.get("/new", _autenticacion.authSession, (req, res) => {
   res.render("products/newProduct");
 });
-Router.get("/vista-test/:cant?", _autenticacion.auth, /*#__PURE__*/function () {
+Router.get("/vista-test/:cant?", _autenticacion.authSession, /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator(function* (req, res) {
     var products = yield _productos2.productosRepository.getRandomProductos(req.params.cant);
     res.render("products/allProducts", {
@@ -55,10 +57,10 @@ Router.get("/vista-test/:cant?", _autenticacion.auth, /*#__PURE__*/function () {
     return _ref2.apply(this, arguments);
   };
 }());
-Router.post("/crear", _autenticacion.auth, _productos.productoController.createProductos);
-Router.delete("/eliminar/:id", _autenticacion.auth, _productos.productoController.deleteProductos);
-Router.put("/actualizar/:id", _autenticacion.auth, _productos.productoController.updateProductos);
-Router.get("/sala-products", _autenticacion.auth, /*#__PURE__*/function () {
+Router.post("/crear", _autenticacion.authSession, _productos.productoController.createProductos);
+Router.delete("/eliminar/:id", _autenticacion.authSession, _productos.productoController.deleteProductos);
+Router.put("/actualizar/:id", _autenticacion.authSession, _productos.productoController.updateProductos);
+Router.get("/sala-products", _autenticacion.authSession, /*#__PURE__*/function () {
   var _ref3 = _asyncToGenerator(function* (req, res) {
     var products = yield _productos2.productosRepository.getAllproductos();
     res.render('products/sala', {

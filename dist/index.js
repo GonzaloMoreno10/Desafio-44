@@ -18,13 +18,15 @@ var _main = _interopRequireDefault(require("./Routes/main"));
 
 var _cookieParser = _interopRequireDefault(require("cookie-parser"));
 
+var _session = require("./services/session");
+
+var _expressSession = _interopRequireDefault(require("express-session"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-var session = require('express-session');
 
 var app = (0, _express.default)();
 
@@ -43,13 +45,7 @@ app.engine('.hbs', (0, _expressHandlebars.default)({
 }));
 app.set('view engine', '.hbs'); //Middlewares
 
-/*app.use(session({
-    secret:'secreto',
-    resave:true,
-    saveUnitialized:true,
-    cookie:{maxAge: 1},
-}))*/
-
+app.use((0, _expressSession.default)(_session.StoreOptions));
 app.use(_express.default.json());
 app.use((0, _cookieParser.default)());
 app.use(_express.default.urlencoded({
@@ -59,6 +55,10 @@ var publicPath = path.resolve(__dirname, '../public');
 console.log(publicPath);
 app.use(_express.default.static(publicPath));
 app.use("/api", _main.default);
+app.use((req, res, next) => {
+  res.locals.user = req.session.user || null;
+  next();
+});
 
 var Server = _http.default.Server(app); //Inicio el servidor de socket
 

@@ -11,8 +11,6 @@ var _productos = _interopRequireDefault(require("./productos.routes"));
 
 var _users = _interopRequireDefault(require("./users.routes"));
 
-var _autenticacion = require("../middlewares/autenticacion");
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var router = (0, _express.Router)();

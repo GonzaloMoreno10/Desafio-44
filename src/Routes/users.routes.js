@@ -1,8 +1,7 @@
 import express from "express";
 const Router = express.Router();
 import {userController} from '../controllers/users.controller' 
-import { usersRepository } from "../repository/users.repository";
-import{auth} from '../middlewares/autenticacion'
+import{auth, authSession} from '../middlewares/autenticacion'
 
 
 //Inicializaciones
@@ -15,15 +14,16 @@ Router.post('/singin',userController.singin);
 
 Router.post('/logout',userController.logout);
 
-Router.get('/logout',auth,(req,res)=>{
-    let cookie = req.cookies.user;
-    res.render('users/logout',{cookie})
+Router.get('/logout',authSession,(req,res)=>{
+    let user = req.session.user;
+    res.render('users/logout',{user})
 })
 
+Router.get('/info',authSession,userController.info)
+
 Router.get('/login',(req,res)=>{
-    res 
-    .clearCookie("user")
-    .render("users/login");
+    req.session.destroy();
+    res.render("users/login");
 })
 
 
