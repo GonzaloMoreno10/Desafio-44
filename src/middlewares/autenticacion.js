@@ -9,7 +9,10 @@ export const auth = function(req,res,next){
 
 export const authSession = function(req,res,next){
     if(req.session.user){
+        let date = new Date();
+        date.setTime(date.getTime() + 60 * 10000);
         req.session.contador ++;
+        req.session.cookie.expires = date = date;
         return next();
     }
     else{
