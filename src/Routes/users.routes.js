@@ -22,6 +22,7 @@ Router.get('/logout',authSession,(req,res)=>{
 Router.get('/info',authSession,userController.info)
 
 Router.get('/login',(req,res)=>{
+    res.locals.user = null;
     req.session.destroy();
     res.render("users/login");
 })

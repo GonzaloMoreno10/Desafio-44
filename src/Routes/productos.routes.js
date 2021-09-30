@@ -14,11 +14,11 @@ Router.get("/listar/:id", authSession,productoController.getProductosByid);
 
 Router.get("/vista",authSession,async (req, res) => {
    let products = await productosRepository.getAllproductos();
-   let user = req.session.user
+   //let user = req.session.user
    let firstLogin = false;
    if(req.session.contador ==  1) firstLogin = true;
 
-   res.render("products/allProducts",{products,user,firstLogin})
+   res.render("products/allProducts",{products,firstLogin})
 })
 
 

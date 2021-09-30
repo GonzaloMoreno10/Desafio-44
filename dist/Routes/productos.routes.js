@@ -27,13 +27,12 @@ Router.get("/listar", _autenticacion.authSession, _productos.productoController.
 Router.get("/listar/:id", _autenticacion.authSession, _productos.productoController.getProductosByid);
 Router.get("/vista", _autenticacion.authSession, /*#__PURE__*/function () {
   var _ref = _asyncToGenerator(function* (req, res) {
-    var products = yield _productos2.productosRepository.getAllproductos();
-    var user = req.session.user;
+    var products = yield _productos2.productosRepository.getAllproductos(); //let user = req.session.user
+
     var firstLogin = false;
     if (req.session.contador == 1) firstLogin = true;
     res.render("products/allProducts", {
       products,
-      user,
       firstLogin
     });
   });

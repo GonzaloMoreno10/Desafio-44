@@ -28,6 +28,7 @@ Router.get('/logout', _autenticacion.authSession, (req, res) => {
 });
 Router.get('/info', _autenticacion.authSession, _users.userController.info);
 Router.get('/login', (req, res) => {
+  res.locals.user = null;
   req.session.destroy();
   res.render("users/login");
 });

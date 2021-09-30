@@ -54,11 +54,11 @@ app.use(_express.default.urlencoded({
 var publicPath = path.resolve(__dirname, '../public');
 console.log(publicPath);
 app.use(_express.default.static(publicPath));
-app.use("/api", _main.default);
 app.use((req, res, next) => {
   res.locals.user = req.session.user || null;
   next();
 });
+app.use("/api", _main.default);
 
 var Server = _http.default.Server(app); //Inicio el servidor de socket
 

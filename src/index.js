@@ -38,14 +38,15 @@ const publicPath = path.resolve(__dirname, '../public');
 console.log(publicPath)
 app.use(express.static(publicPath));
 
-
-
-app.use("/api", Router);
-
 app.use((req,res,next)=>{
     res.locals.user = req.session.user || null;
     next();
 })
+
+app.use("/api", Router);
+
+
+
 
 
 
