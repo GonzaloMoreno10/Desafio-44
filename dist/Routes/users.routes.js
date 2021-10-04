@@ -17,16 +17,19 @@ var Router = _express.default.Router();
 
 //Inicializaciones
 //Rutas
-Router.post("/login", _users.userController.login);
+Router.post('/login', _users.userController.login);
 Router.post('/singin', _users.userController.singin);
-Router.post('/logout', _users.userController.logout);
-Router.get('/logout', _autenticacion.authSession, (req, res) => {
-  var user = req.session.user;
-  res.render('users/logout', {
-    user
-  });
+Router.get('/singin', (req, res) => {
+  res.render('users/singin');
 });
-Router.get('/info', _autenticacion.authSession, _users.userController.info);
+Router.post('/logout', _users.userController.logout);
+Router.get('/logout', _autenticacion.auth, (req, res) => {
+  res.render('users/logout');
+});
+Router.get('/error', _autenticacion.auth, (req, res) => {
+  res.render('users/logout');
+});
+Router.get('/info', _autenticacion.auth, _users.userController.info);
 Router.get('/login', (req, res) => {
   res.locals.user = null;
   req.session.destroy();

@@ -3,38 +3,21 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.authSession = exports.auth = void 0;
+exports.auth = void 0;
 
 var auth = function auth(req, res, next) {
-  if (req.cookies.user) {
+  if (req.user) {
+    var date = new Date();
+    date.setTime(date.getTime() + 60 * 10000);
+    req.session.cookie.expires = date;
+    console.log(req.session);
     return next();
   } else {
-    return res.render('users/error');
+    var message = 'No se encuentra logeado';
+    return res.render('errors/login', {
+      message
+    });
   }
 };
 
 exports.auth = auth;
-
-var authSession = function authSession(req, res, next) {
-  if (req.session.user) {
-    var date = new Date();
-    date.setTime(date.getTime() + 60 * 10000);
-    req.session.contador++;
-    req.session.cookie.expires = date = date;
-    return next();
-  } else {
-    return res.render('users/error');
-  }
-};
-/*export const auth = function(req,res,next){
-    if(req.session && req.session.user){
-        console.log('User: ' + req.session.user)
-        return next();
-    }
-    else{
-        return res.redirect('/api/users/login');
-    }
-}*/
-
-
-exports.authSession = authSession;

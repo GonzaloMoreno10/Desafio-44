@@ -22,6 +22,8 @@ var _session = require("./services/session");
 
 var _expressSession = _interopRequireDefault(require("express-session"));
 
+var _passport = _interopRequireDefault(require("passport"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
@@ -30,8 +32,9 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 
 var app = (0, _express.default)();
 
-require('./services/mongo'); //const __dirname = dirname(fileURLToPath(import.meta.url));
+require('./services/mongo');
 
+require('./services/passport');
 
 app.set('port', process.env.port || 8080);
 app.set('views', path.resolve(__dirname, 'views'));
@@ -46,6 +49,8 @@ app.engine('.hbs', (0, _expressHandlebars.default)({
 app.set('view engine', '.hbs'); //Middlewares
 
 app.use((0, _expressSession.default)(_session.StoreOptions));
+app.use(_passport.default.initialize());
+app.use(_passport.default.session());
 app.use(_express.default.json());
 app.use((0, _cookieParser.default)());
 app.use(_express.default.urlencoded({
@@ -55,7 +60,8 @@ var publicPath = path.resolve(__dirname, '../public');
 console.log(publicPath);
 app.use(_express.default.static(publicPath));
 app.use((req, res, next) => {
-  res.locals.user = req.session.user || null;
+  res.locals.user = req.user || null;
+  if (res.locals.user !== null) console.log(res.locals.user.user);
   next();
 });
 app.use("/api", _main.default);

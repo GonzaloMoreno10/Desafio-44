@@ -3,43 +3,46 @@ const Router = express.Router();
 import {productoController} from '../controllers/productos.controller'
 import {productosRepository} from '../repository/productos.repository'
 import{auth,authSession} from '../middlewares/autenticacion'
+import{usersRepository} from '../repository/users.repository'
 
 //Inicializaciones
 
 //Rutas
+Router.get("/listar",auth, productoController.getAllproductos);
 
-Router.get("/listar",authSession, productoController.getAllproductos);
+Router.get("/listar/:id", auth,productoController.getProductosByid);
 
-Router.get("/listar/:id", authSession,productoController.getProductosByid);
-
-Router.get("/vista",authSession,async (req, res) => {
+Router.get("/vista",auth,async (req, res) => {
    let products = await productosRepository.getAllproductos();
-   //let user = req.session.user
-   let firstLogin = false;
-   if(req.session.contador ==  1) firstLogin = true;
-
+   let firstLogin = req.user.firstLogin;
+   
    res.render("products/allProducts",{products,firstLogin})
+   if(firstLogin){
+       let user = req.user;
+    user.firstLogin = false;
+    await usersRepository.updateUser(user._id,user);
+} 
 })
 
 
 
-Router.get("/new",authSession,(req, res) => {
+Router.get("/new",auth,(req, res) => {
     res.render("products/newProduct")
  })
 
-Router.get("/vista-test/:cant?",authSession,async (req,res)=>{
+Router.get("/vista-test/:cant?",auth,async (req,res)=>{
     let products = await productosRepository.getRandomProductos(req.params.cant)
     res.render("products/allProducts",{products})
 })
 
-Router.post("/crear",authSession,productoController.createProductos);
+Router.post("/crear",auth,productoController.createProductos);
 
-Router.delete("/eliminar/:id",authSession,productoController.deleteProductos);
+Router.delete("/eliminar/:id",auth,productoController.deleteProductos);
 
-Router.put("/actualizar/:id",authSession,productoController.updateProductos)
+Router.put("/actualizar/:id",auth,productoController.updateProductos)
 
 
-Router.get("/sala-products",authSession,async (req, res) => {
+Router.get("/sala-products",auth,async (req, res) => {
     let products = await productosRepository.getAllproductos() ;
     res.render('products/sala',{products})
 })

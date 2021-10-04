@@ -1,16 +1,22 @@
 import users from '../models/User';
 
+
 class UsersRepository {
+
+  async getUser(user){
+    console.log(user)
+    let usuario = await users.findOne({user:user})
+    if(usuario) return usuario;
+  }
+
+
   async getUserByName(name) {
-    let usuario = await users.find();
-    for(let i in usuario){
-        if(usuario[i].name === name){
-            return usuario[i];
-        }
-    }
+    let usuario = await users.find({name:name});
+    if(usuario) return usuario;
   }
   async createUser(user) {
-    return await users.create(user)
+    user.firstLogin = true;
+    await users.create(user)
   }
   async updateUser(id,user) {
     return await users.findByIdAndUpdate(id,user)

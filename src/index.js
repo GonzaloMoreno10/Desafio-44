@@ -9,9 +9,11 @@ import Router from "./Routes/main";
 import cookieParser from 'cookie-parser';
 import {StoreOptions} from './services/session';
 import session from 'express-session'
+import passport from 'passport'
 const app = express();
+
 require('./services/mongo')
-//const __dirname = dirname(fileURLToPath(import.meta.url));
+require('./services/passport');
 
 
 app.set('port',process.env.port ||8080);
@@ -30,7 +32,8 @@ app.set('view engine', '.hbs');
 //Middlewares
 app.use(session(StoreOptions))
 
-
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
@@ -39,15 +42,13 @@ console.log(publicPath)
 app.use(express.static(publicPath));
 
 app.use((req,res,next)=>{
-    res.locals.user = req.session.user || null;
+    res.locals.user = req.user || null;
+    if(res.locals.user !== null) console.log(res.locals.user.user)
+    
     next();
 })
 
 app.use("/api", Router);
-
-
-
-
 
 
 const Server = http.Server(app);
