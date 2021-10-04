@@ -26,7 +26,7 @@ export const initIo = async server => {
     const msgSchema = new schema.Array (msg);
 
     socket.on ('mensajes', async data => {
-      console.log ('Me llego un Mensaje y lo voy a guardar');
+      //console.log ('Me llego un Mensaje y lo voy a guardar');
       let mensaje = new Mensaje ();
       mensaje.author.id = data.author.email;
       mensaje.author.nombre = data.author.nombre;
@@ -49,7 +49,7 @@ export const initIo = async server => {
       }));
 
       let msjNormalize = normalize (mensajes, msgSchema);
-      console.log (util.inspect (msjNormalize, true, 7, true));
+      //console.log (util.inspect (msjNormalize, true, 7, true));
       io.emit ('mensajes', msjNormalize);
     });
     socket.on ('productos', async data => {
@@ -86,7 +86,7 @@ export const initIo = async server => {
       }));
 
       let msjNormalize = normalize (mensajes, msgSchema);
-      console.log (util.inspect (msjNormalize, true, 7, true));
+      //console.log (util.inspect (msjNormalize, true, 7, true));
       socket.emit ('mensajes', msjNormalize);
     });
   });

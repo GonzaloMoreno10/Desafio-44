@@ -1,23 +1,41 @@
-class UsersController {
-  login(req, res) {
+import { usersRepository } from '../repository/users.repository'
+import User from '../models/User';
+import passport from 'passport';
 
-    let { name } = req.body;
-    let date = new Date();
-    date.setTime(date.getTime() + 60 * 1000);
-    if (name) {
-      res
-        .cookie("user", name, { expires: date, httpOnly: true })
-        .redirect("/api/productos/vista");
-    } else {
-      res.send({ error: "set-cookie: falta nombre " });
-    }
+class UsersController {
+  login(req,res,next) {
+      passport.authenticate('login', function(err, user, info) {
+        if (err) {return next(err); }
+        if (!user) {let message = info.message; return res.render('errors/login',{message}); }
+        req.logIn(user, function(err) {
+          if (err) { return next(err); }
+          return res.redirect('/api/productos/vista');
+        });
+      })(req, res, next);
   }
 
-  singin(req, res) {}
+  info(req, res) {
+    res.send({
+      session: req.session,
+      sessionid: req.sessionID,
+      cookies: req.cookies,
+    })
+  }
+
+  async singin(req, res) {
+    let { user, password, email } = req.body;
+    const usuario = new User();
+    let hash = await usuario.encryptPassword(password);
+    usuario.user = user;
+    usuario.password = hash;
+    usuario.email = email;
+    await usersRepository.createUser(usuario)
+    res.redirect('/api/users/login')
+  }
 
   logout(req, res) {
+    req.logout();
     res.redirect("/api/users/logout");
-    
   }
 }
 

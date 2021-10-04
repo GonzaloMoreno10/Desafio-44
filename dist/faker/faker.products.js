@@ -21,8 +21,8 @@ var products = cant => {
       title: _faker.default.commerce.productName(),
       price: _faker.default.commerce.price(),
       thumbnail: _faker.default.image.image()
-    };
-    console.log(prod);
+    }; //console.log(prod);
+
     productos.push(prod);
   }
 

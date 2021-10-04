@@ -13,6 +13,8 @@ var _productos2 = require("../repository/productos.repository");
 
 var _autenticacion = require("../middlewares/autenticacion");
 
+var _users = require("../repository/users.repository");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -24,16 +26,21 @@ var Router = _express.default.Router();
 //Inicializaciones
 //Rutas
 Router.get("/listar", _autenticacion.auth, _productos.productoController.getAllproductos);
-Router.get("/listar/:id", _productos.productoController.getProductosByid);
+Router.get("/listar/:id", _autenticacion.auth, _productos.productoController.getProductosByid);
 Router.get("/vista", _autenticacion.auth, /*#__PURE__*/function () {
   var _ref = _asyncToGenerator(function* (req, res) {
     var products = yield _productos2.productosRepository.getAllproductos();
-    var cookie = req.cookies.user;
-    console.log(cookie);
+    var firstLogin = req.user.firstLogin;
     res.render("products/allProducts", {
       products,
-      cookie
+      firstLogin
     });
+
+    if (firstLogin) {
+      var user = req.user;
+      user.firstLogin = false;
+      yield _users.usersRepository.updateUser(user._id, user);
+    }
   });
 
   return function (_x, _x2) {

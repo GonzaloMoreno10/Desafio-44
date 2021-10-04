@@ -2,21 +2,26 @@ import express from "express";
 const Router = express.Router();
 import {productoController} from '../controllers/productos.controller'
 import {productosRepository} from '../repository/productos.repository'
-import{auth} from '../middlewares/autenticacion'
+import{auth,authSession} from '../middlewares/autenticacion'
+import{usersRepository} from '../repository/users.repository'
 
 //Inicializaciones
 
 //Rutas
-
 Router.get("/listar",auth, productoController.getAllproductos);
 
-Router.get("/listar/:id", productoController.getProductosByid);
+Router.get("/listar/:id", auth,productoController.getProductosByid);
 
 Router.get("/vista",auth,async (req, res) => {
-   let products = await productosRepository.getAllproductos() ;
-   let cookie = req.cookies.user;
-   console.log(cookie)
-   res.render("products/allProducts",{products,cookie})
+   let products = await productosRepository.getAllproductos();
+   let firstLogin = req.user.firstLogin;
+   
+   res.render("products/allProducts",{products,firstLogin})
+   if(firstLogin){
+       let user = req.user;
+    user.firstLogin = false;
+    await usersRepository.updateUser(user._id,user);
+} 
 })
 
 

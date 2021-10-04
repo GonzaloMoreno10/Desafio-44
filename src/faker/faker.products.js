@@ -11,7 +11,7 @@ export const products = (cant) => {
             price: faker.commerce.price(),
             thumbnail: faker.image.image()
         }
-        console.log(prod);
+        //console.log(prod);
         productos.push(prod);
         
     }
