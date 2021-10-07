@@ -15,6 +15,10 @@ var _autenticacion = require("../middlewares/autenticacion");
 
 var _users = require("../repository/users.repository");
 
+var _passport = _interopRequireDefault(require("../services/passport.facebook"));
+
+var _methodOverride = _interopRequireDefault(require("method-override"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -25,6 +29,14 @@ var Router = _express.default.Router();
 
 //Inicializaciones
 //Rutas
+Router.use((0, _methodOverride.default)(function (req, res) {
+  if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+    // look in urlencoded POST bodies and delete it
+    var method = req.body._method;
+    delete req.body._method;
+    return method;
+  }
+}));
 Router.get("/listar", _autenticacion.auth, _productos.productoController.getAllproductos);
 Router.get("/listar/:id", _autenticacion.auth, _productos.productoController.getProductosByid);
 Router.get("/vista", _autenticacion.auth, /*#__PURE__*/function () {
@@ -62,19 +74,32 @@ Router.get("/vista-test/:cant?", _autenticacion.auth, /*#__PURE__*/function () {
     return _ref2.apply(this, arguments);
   };
 }());
+Router.get('/editar/:id', /*#__PURE__*/function () {
+  var _ref3 = _asyncToGenerator(function* (req, res) {
+    var id = req.params.id;
+    var producto = yield _productos2.productosRepository.getProductosById(id);
+    res.render('products/edit', {
+      producto
+    });
+  });
+
+  return function (_x5, _x6) {
+    return _ref3.apply(this, arguments);
+  };
+}());
 Router.post("/crear", _autenticacion.auth, _productos.productoController.createProductos);
 Router.delete("/eliminar/:id", _autenticacion.auth, _productos.productoController.deleteProductos);
 Router.put("/actualizar/:id", _autenticacion.auth, _productos.productoController.updateProductos);
 Router.get("/sala-products", _autenticacion.auth, /*#__PURE__*/function () {
-  var _ref3 = _asyncToGenerator(function* (req, res) {
+  var _ref4 = _asyncToGenerator(function* (req, res) {
     var products = yield _productos2.productosRepository.getAllproductos();
     res.render('products/sala', {
       products
     });
   });
 
-  return function (_x5, _x6) {
-    return _ref3.apply(this, arguments);
+  return function (_x7, _x8) {
+    return _ref4.apply(this, arguments);
   };
 }());
 var _default = Router;

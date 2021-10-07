@@ -56,13 +56,13 @@
             style=" padding:20px;background-color:rgb(192, 210, 221);border-radius:10px">
             <h5>Mensajes</h5>
             <div class="form-group">
-                <input type="text" class="form-control" id="email" name="email" placeholder="Email" />
+                <input type="text" class="form-control" id="email" name="email" value="{{email}}" placeholder="Email" />
             </div>
             <div class="form-group" style="margin-top: 10px; margin-bottom:10px">
-                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" />
+                <input type="text" class="form-control" id="nombre" name="nombre" value="{{name.givenName}}"placeholder="Nombre" />
             </div>
             <div class="form-group" style="margin-top: 10px; margin-bottom:10px">
-                <input type="text" class="form-control" id="apellido" name="apellido" placeholder="Apellido" />
+                <input type="text" class="form-control" id="apellido" name="apellido" value="{{name.familyName}}"placeholder="Apellido" />
             </div>
             <div class="form-group" style="margin-top: 10px; margin-bottom:10px">
                 <input type="text" class="form-control" id="edad" name="edad" placeholder="Edad" />
@@ -71,7 +71,7 @@
                 <input type="text" class="form-control" id="alias" name="alias" placeholder="Alias" />
             </div>
             <div class="form-group" style="margin-top: 10px; margin-bottom:10px">
-                <input type="text" class="form-control" id="avatar" name="avatar" placeholder="Avatar" />
+                <input type="text" class="form-control" id="avatar" name="avatar" value="{{image}}" placeholder="Avatar" />
             </div>
             <div class="form-group" style="margin-top: 10px; margin-bottom:10px">
                 <input type="text" class="form-control" id="texto" name="texto" placeholder="Texto" />

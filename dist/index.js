@@ -24,6 +24,8 @@ var _expressSession = _interopRequireDefault(require("express-session"));
 
 var _passport = _interopRequireDefault(require("passport"));
 
+var _connectFlash = _interopRequireDefault(require("connect-flash"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
@@ -34,7 +36,7 @@ var app = (0, _express.default)();
 
 require('./services/mongo');
 
-require('./services/passport');
+require('./services/passport.local');
 
 app.set('port', process.env.port || 8080);
 app.set('views', path.resolve(__dirname, 'views'));
@@ -49,6 +51,7 @@ app.engine('.hbs', (0, _expressHandlebars.default)({
 app.set('view engine', '.hbs'); //Middlewares
 
 app.use((0, _expressSession.default)(_session.StoreOptions));
+app.use((0, _connectFlash.default)());
 app.use(_passport.default.initialize());
 app.use(_passport.default.session());
 app.use(_express.default.json());
@@ -61,7 +64,18 @@ console.log(publicPath);
 app.use(_express.default.static(publicPath));
 app.use((req, res, next) => {
   res.locals.user = req.user || null;
-  if (res.locals.user !== null) console.log(res.locals.user.user);
+
+  if (res.locals.user !== null) {
+    if (req.user.photos) {
+      res.locals.image = req.user.photos[0].value || null;
+      res.locals.email = req.user.emails[0].value || null;
+      res.locals.name = req.user.name || null;
+    }
+  }
+
+  res.locals.success_msg = req.flash('success_msg');
+  res.locals.error_msg = req.flash('error_msg');
+  res.locals.error = req.flash("error");
   next();
 });
 app.use("/api", _main.default);
@@ -69,7 +83,8 @@ app.use("/api", _main.default);
 var Server = _http.default.Server(app); //Inicio el servidor de socket
 
 
-(0, _socketIo.initIo)(Server); //Listen
+(0, _socketIo.initIo)(Server);
+console.log('asdasdsa'); //Listen
 
 Server.listen(app.get('port'), (req, res) => {
   console.log("Servidor escuchando en " + app.get('port'));

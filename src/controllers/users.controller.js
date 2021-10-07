@@ -3,8 +3,8 @@ import User from '../models/User';
 import passport from 'passport';
 
 class UsersController {
-  login(req,res,next) {
-      passport.authenticate('login', function(err, user, info) {
+ async login (req,res,next) {
+      await passport.authenticate('login', function(err, user, info) {
         if (err) {return next(err); }
         if (!user) {let message = info.message; return res.render('errors/login',{message}); }
         req.logIn(user, function(err) {

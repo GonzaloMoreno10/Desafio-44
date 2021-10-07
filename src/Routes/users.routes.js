@@ -2,12 +2,30 @@ import express from "express";
 const Router = express.Router();
 import { userController } from '../controllers/users.controller'
 import { auth } from '../middlewares/autenticacion'
+import passport from '../services/passport.facebook'
 
 
 
 //Inicializaciones
 
 //Rutas
+
+Router.get('/auth/facebook/callback',
+passport.authenticate('facebook', {
+      successRedirect: '/api/productos/vista',
+      failureRedirect: '/api/users/error',
+    })
+  );
+
+Router.get('/datos',(req,res)=>{
+    let user = req.user;
+    let nombre = user.displayName;
+    let foto = user.photos[0].value
+    let email = user.emails[0].value
+    res.render('datos',{nombre,foto,email})
+})
+Router.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email'] }));
+
 Router.post('/login',userController.login);
 
 Router.post('/singin', userController.singin);

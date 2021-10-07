@@ -3,7 +3,6 @@ export const auth = function(req,res,next){
         let date = new Date();
         date.setTime(date.getTime() + 60 * 10000);
         req.session.cookie.expires = date;
-        console.log(req.session)
             return next();
         }
     else{

@@ -67,6 +67,7 @@ class ProductosController {
       console.log(producto);
       var id = yield _productos.productosRepository.createProducto(producto);
       var newItem = yield _productos.productosRepository.getAllproductos(id);
+      req.flash("success_msg", "Producto creado correctamente");
       res.redirect('/api/productos/vista');
     })();
   }
@@ -76,19 +77,23 @@ class ProductosController {
       var {
         title,
         price,
-        thumbnail
+        stock,
+        code,
+        description,
+        image
       } = req.body;
       var {
         id
       } = req.params;
+      console.log(id);
 
-      if (!title || !price || !thumbnail) {
+      if (!title || !price || !stock || !code || !description || !image) {
         return res.status(400).json({
-          msg: 'Invalida body'
+          msg: 'Invalid body'
         });
       }
 
-      var productoOriginal = yield productos.getProductosById(id); //console.log(productoOriginal)
+      var productoOriginal = yield _productos.productosRepository.getProductosById(id); //console.log(productoOriginal)
 
       if (!productoOriginal) {
         return res.status(404).json({
@@ -99,14 +104,15 @@ class ProductosController {
       var prod = {
         title,
         price,
-        thumbnail
+        stock,
+        code,
+        description,
+        image
       };
       yield _productos.productosRepository.update(id, prod);
       var item = yield _productos.productosRepository.getProductosById(id);
-      res.json({
-        msg: 'Producto Actualizado',
-        item
-      });
+      req.flash("success_msg", "Producto actualizado correctamente");
+      return res.redirect('/api/productos/vista');
     })();
   }
 
@@ -119,15 +125,12 @@ class ProductosController {
       var producto = yield _productos.productosRepository.delete(id);
 
       if (!producto) {
-        return res.status(404).json({
-          msg: 'Producto no encontrado'
-        });
+        return res.redirect('/api/productos/vista');
       }
 
       yield _productos.productosRepository.delete(id);
-      res.json({
-        msg: 'Producto eliminado'
-      });
+      req.flash("success_msg", "Producto Eliminado correctamente");
+      res.redirect('/api/productos/vista');
     })();
   }
 

@@ -1,6 +1,7 @@
 import passport from 'passport';
 import passportLocal from 'passport-local';
 import users from '../models/User';
+import { JsonWebToken } from 'jsonwebtoken';
 import { usersRepository } from '../repository/users.repository'
 
 const LocalStrategy = passportLocal.Strategy;
@@ -27,6 +28,8 @@ const login = async (req, userName, password, done) => {
     
     return done(null, user);
   };
+
+
   
 
   passport.use('login', new LocalStrategy(strategyOptions, login));

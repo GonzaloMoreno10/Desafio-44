@@ -6,7 +6,6 @@ import { productosRepository } from '../repository/productos.repository';
 class ProductosController {
     async getAllproductos(req, res) {
         const items = await productosRepository.getAllproductos();
-
         res.json({
             data: items
         })
@@ -38,20 +37,21 @@ class ProductosController {
         const id = await productosRepository.createProducto(producto)
 
         const newItem = await productosRepository.getAllproductos(id);
-
+        req.flash("success_msg","Producto creado correctamente");
         res.redirect('/api/productos/vista')
     }
 
 
     async updateProductos(req, res) {
-        const { title, price, thumbnail } = req.body;
+        const { title, price, stock,code,description,image } = req.body;
         
         const { id } = req.params;
-        if (!title || !price || !thumbnail) {
-            return res.status(400).json({ msg: 'Invalida body' })
+        console.log(id);
+        if (!title || !price || !stock || !code || !description ||!image) {
+            return res.status(400).json({ msg: 'Invalid body' })
         }
 
-        const productoOriginal = await productos.getProductosById(id);
+        const productoOriginal = await productosRepository.getProductosById(id);
 
         //console.log(productoOriginal)
         if (!productoOriginal) {
@@ -60,15 +60,13 @@ class ProductosController {
             })
         }
 
-        const prod = {title,price,thumbnail};
+        const prod = { title, price, stock,code,description,image };
 
         await productosRepository.update(id, prod);
 
         const item = await productosRepository.getProductosById(id);
-        res.json({
-            msg: 'Producto Actualizado',
-            item
-        })
+        req.flash("success_msg","Producto actualizado correctamente");
+        return res.redirect('/api/productos/vista')
     }
 
     async deleteProductos(req,res){
@@ -78,15 +76,12 @@ class ProductosController {
         const producto = await productosRepository.delete(id);
 
         if (!producto) {
-            return res.status(404).json({
-                msg: 'Producto no encontrado'
-            })
+            return res.redirect('/api/productos/vista')
         }
 
         await productosRepository.delete(id);
-        res.json({
-            msg:'Producto eliminado'
-        })
+        req.flash("success_msg","Producto Eliminado correctamente");
+        res.redirect('/api/productos/vista')
     }
 }
 

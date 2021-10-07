@@ -19,27 +19,28 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 class UsersController {
   login(req, res, next) {
-    _passport.default.authenticate('login', function (err, user, info) {
-      if (err) {
-        return next(err);
-      }
-
-      if (!user) {
-        var message = info.message;
-        return res.render('errors/login', {
-          message,
-          userName
-        });
-      }
-
-      req.logIn(user, function (err) {
+    return _asyncToGenerator(function* () {
+      yield _passport.default.authenticate('login', function (err, user, info) {
         if (err) {
           return next(err);
         }
 
-        return res.redirect('/api/productos/vista');
-      });
-    })(req, res, next);
+        if (!user) {
+          var message = info.message;
+          return res.render('errors/login', {
+            message
+          });
+        }
+
+        req.logIn(user, function (err) {
+          if (err) {
+            return next(err);
+          }
+
+          return res.redirect('/api/productos/vista');
+        });
+      })(req, res, next);
+    })();
   }
 
   info(req, res) {
