@@ -13,8 +13,6 @@ export default function printProcessInfo() {
 
 }
 
-
-
 const generarRandoms = (cantidad) => {
   let array = [];
 
