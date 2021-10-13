@@ -8,7 +8,6 @@ export default function printProcessInfo() {
         title:process.title,
         platform:process.platform,
         memory: JSON.stringify(process.memoryUsage()),
-        argumentos: process.argv,
     }
     return obj;
     

@@ -3,20 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = printProcessInfo;
 exports.calcular = void 0;
-
-function printProcessInfo() {
-  var obj = {
-    cwd: process.cwd(),
-    pid: process.pid,
-    version: process.version,
-    title: process.title,
-    platform: process.platform,
-    memory: JSON.stringify(process.memoryUsage())
-  };
-  return obj;
-}
 
 var generarRandoms = cantidad => {
   var array = [];
