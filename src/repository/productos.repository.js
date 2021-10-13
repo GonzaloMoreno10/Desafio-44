@@ -2,9 +2,19 @@ import { mySQLDB } from '../services/database';
 import productos from '../models/Producto';
 import {products} from '../faker/faker.products'
 
+
 class ProductoRepository {
   async getAllproductos() {
-    return await productos.find();
+    let prod = await productos.find();
+    return prod;
+  }
+
+  async getProductsPagination(page){
+    const opciones = {
+      limit:16,
+      page:page
+    }
+    return await productos.paginate({},opciones);
   }
 
   async getProductosById(id) {

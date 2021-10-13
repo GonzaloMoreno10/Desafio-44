@@ -5,13 +5,14 @@ import { allowInsecurePrototypeAccess } from '@handlebars/allow-prototype-access
 import http from "http";
 import {initIo} from "./services/socketIo.js";
 import express from 'express';
-import Router from "./Routes/main";
+import Router from "./routes/main";
 import cookieParser from 'cookie-parser';
 import {StoreOptions} from './services/session';
 import session from 'express-session'
 import passport from 'passport'
 import flash from 'connect-flash'
 const app = express();
+const publicPath = path.resolve(__dirname, '../public');
 
 require('./services/mongo')
 require('./services/passport.local');
@@ -28,6 +29,8 @@ app.engine('.hbs', exphbs({  //Configuro handlebars
     handlebars: allowInsecurePrototypeAccess(Handlebars)
 }));
 
+
+
 app.set('view engine', '.hbs');
 
 //Middlewares
@@ -39,9 +42,9 @@ app.use(passport.session());
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
-const publicPath = path.resolve(__dirname, '../public');
-console.log(publicPath)
-app.use(express.static(publicPath));
+console.log(path.join(__dirname, '../public'))
+app.use(express.static(path.join(__dirname, '../public')));
+app.use('/css', express.static(__dirname + '../public'));
 
 app.use((req,res,next)=>{
     res.locals.user = req.user || null;
@@ -67,7 +70,6 @@ const Server = http.Server(app);
 //Inicio el servidor de socket
 initIo(Server);
 
-console.log('asdasdsa')
 //Listen
 Server.listen(app.get('port'), (req, res) => {
     console.log("Servidor escuchando en " + app.get('port'));

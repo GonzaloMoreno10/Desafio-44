@@ -1,0 +1,16 @@
+{{#if calc}}
+<p>Existe</p>
+{{#each calc}}
+<div class="card">
+    <div class="card-body">
+        <p>Id de proceso: {{calc.cantidad}}</p>
+    </div>
+</div>
+
+{{/each}}
+{{else}}
+
+<p>No existe</p>
+{{/if}}
+
+

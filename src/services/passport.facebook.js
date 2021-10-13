@@ -1,10 +1,13 @@
 import passport from 'passport';
 import passportFacebook from 'passport-facebook';
 const FaceBookStrategy = passportFacebook.Strategy;
+import {FACEBOOK_CLIENT_ID,FACEBOOK_SECRET} from '../config/venv';
+
+
 
 const strategyOptions = {
-  clientID: '1291687597947398',
-  clientSecret: '1d51c5fe5865c3223eeb5b28f571cdc5',
+  clientID: FACEBOOK_CLIENT_ID,
+  clientSecret: FACEBOOK_SECRET,
   callbackURL: 'http://localhost:8080/api/users/auth/facebook/callback',
   profileFields: ['id', 'displayName', 'photos', 'emails','name'],
 };

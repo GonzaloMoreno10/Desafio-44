@@ -1,0 +1,17 @@
+<div class="card">
+    <div class="card-header">
+        Process Info
+    </div>
+    <div class="card-body">
+        <p> Directorio de trabajo actual: {{data.cwd}}</p>
+        <p>Id de proceso: {{data.pid}}</p>
+        <p>Version de NodeJS: {{data.version}}</p>
+        <p>Titulo del proceso: {{data.title}}</p>
+        <p>Sistema Operativo: {{data.platform}}</p>
+        <p>Memoria usada: {{data.memory}}</p>
+        <p>Argumentos: </p>
+        {{#each data.argumentos}}
+        <p>{{data.argumentos.value}}</p>
+        {{/each}}
+    </div>
+</div>   

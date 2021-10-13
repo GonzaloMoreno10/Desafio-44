@@ -19,13 +19,13 @@ Router.use(methodOverride(function(req, res) {
     }
   }));
 
-Router.get("/listar",auth, productoController.getAllproductos);
+Router.get("/listar", productoController.getProductPagination);
 
 
 Router.get("/listar/:id", auth,productoController.getProductosByid);
 
 Router.get("/vista",auth,async (req, res) => {
-   let products = await productosRepository.getAllproductos();
+   let products = await productosRepository.getProductsPagination(req.query.page);
    let firstLogin = req.user.firstLogin;
    
    res.render("products/allProducts",{products,firstLogin})

@@ -6,8 +6,17 @@ import { productosRepository } from '../repository/productos.repository';
 class ProductosController {
     async getAllproductos(req, res) {
         const items = await productosRepository.getAllproductos();
+        console.log(items)
         res.json({
             data: items
+        })
+    }
+
+    async getProductPagination(req,res){
+        const page = req.query.page;
+        const items = await productosRepository.getProductsPagination(page);
+        res.json({
+            items
         })
     }
 

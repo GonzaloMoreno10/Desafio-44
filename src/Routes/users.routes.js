@@ -13,7 +13,8 @@ import passport from '../services/passport.facebook'
 Router.get('/auth/facebook/callback',
 passport.authenticate('facebook', {
       successRedirect: '/api/productos/vista',
-      failureRedirect: '/api/users/error',
+      failureRedirect: '/api/users/login',
+      failureFlash: true
     })
   );
 
