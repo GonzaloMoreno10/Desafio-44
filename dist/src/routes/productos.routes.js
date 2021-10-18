@@ -15,8 +15,6 @@ var _autenticacion = require("../middlewares/autenticacion");
 
 var _users = require("../repository/users.repository");
 
-var _passport = _interopRequireDefault(require("../services/passport.facebook"));
-
 var _methodOverride = _interopRequireDefault(require("method-override"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

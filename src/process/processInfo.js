@@ -1,4 +1,4 @@
-
+const numCpus = require('os').cpus().length;
 export default function printProcessInfo() {
     
     let obj = {
@@ -7,6 +7,7 @@ export default function printProcessInfo() {
         version:process.version,
         title:process.title,
         platform:process.platform,
+        procesadores: numCpus,
         memory: JSON.stringify(process.memoryUsage()),
     }
     return obj;

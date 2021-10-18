@@ -5,6 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = printProcessInfo;
 
+var numCpus = require('os').cpus().length;
+
 function printProcessInfo() {
   var obj = {
     cwd: process.cwd(),
@@ -12,8 +14,8 @@ function printProcessInfo() {
     version: process.version,
     title: process.title,
     platform: process.platform,
-    memory: JSON.stringify(process.memoryUsage()),
-    argumentos: process.argv
+    procesadores: numCpus,
+    memory: JSON.stringify(process.memoryUsage())
   };
   return obj;
 }

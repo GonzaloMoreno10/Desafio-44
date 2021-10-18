@@ -26,6 +26,10 @@ var _passport = _interopRequireDefault(require("passport"));
 
 var _connectFlash = _interopRequireDefault(require("connect-flash"));
 
+var _cluster = _interopRequireDefault(require("cluster"));
+
+var _os = _interopRequireDefault(require("os"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
@@ -60,9 +64,7 @@ app.use((0, _cookieParser.default)());
 app.use(_express.default.urlencoded({
   extended: true
 }));
-console.log(path.join(__dirname, '../public'));
 app.use(_express.default.static(path.join(__dirname, '../public')));
-app.use('/css', _express.default.static(__dirname + '../public'));
 app.use((req, res, next) => {
   res.locals.user = req.user || null;
 
@@ -84,8 +86,27 @@ app.use("/api", _main.default);
 var Server = _http.default.Server(app); //Inicio el servidor de socket
 
 
-(0, _socketIo.initIo)(Server); //Listen
+(0, _socketIo.initIo)(Server);
 
-Server.listen(app.get('port'), (req, res) => {
-  console.log("Servidor escuchando en " + app.get('port'));
-});
+var numCpus = _os.default.cpus().length;
+
+if (_cluster.default.isMaster) {
+  console.log("NUMERO DE CPUS ===> ".concat(numCpus));
+  console.log("PID MASTER ".concat(process.pid));
+
+  for (var i = 0; i < numCpus; i++) {
+    _cluster.default.fork();
+  }
+
+  _cluster.default.on('exit', worker => {
+    console.log("Worker ".concat(worker.process.pid, " died at ").concat(Date()));
+
+    _cluster.default.fork();
+  });
+} else {
+  /* --------------------------------------------------------------------------- */
+
+  /* WORKERS */
+  var PORT = 8080;
+  Server.listen(PORT, () => console.log("Servidor express escuchando en el puerto ".concat(PORT, " - PID WORKER ").concat(process.pid)));
+}

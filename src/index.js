@@ -11,6 +11,8 @@ import {StoreOptions} from './services/session';
 import session from 'express-session'
 import passport from 'passport'
 import flash from 'connect-flash'
+import cluster from "cluster"
+import os from 'os'
 const app = express();
 const publicPath = path.resolve(__dirname, '../public');
 
@@ -42,9 +44,7 @@ app.use(passport.session());
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
-console.log(path.join(__dirname, '../public'))
 app.use(express.static(path.join(__dirname, '../public')));
-app.use('/css', express.static(__dirname + '../public'));
 
 app.use((req,res,next)=>{
     res.locals.user = req.user || null;
@@ -64,13 +64,34 @@ app.use((req,res,next)=>{
 
 app.use("/api", Router);
 
-
 const Server = http.Server(app);
 
 //Inicio el servidor de socket
 initIo(Server);
 
-//Listen
-Server.listen(app.get('port'), (req, res) => {
-    console.log("Servidor escuchando en " + app.get('port'));
-})
+const numCpus = os.cpus().length;
+if (cluster.isMaster) {
+    console.log(`NUMERO DE CPUS ===> ${numCpus}`);
+    console.log(`PID MASTER ${process.pid}`);
+  
+    for (let i = 0; i < numCpus; i++) {
+      cluster.fork();
+    }
+  
+    cluster.on('exit', (worker) => {
+      console.log(`Worker ${worker.process.pid} died at ${Date()}`);
+      cluster.fork();
+    });
+  } else {
+    /* --------------------------------------------------------------------------- */
+    /* WORKERS */
+    const PORT = 8080;
+  
+    Server.listen(PORT, () =>
+      console.log(
+        `Servidor express escuchando en el puerto ${PORT} - PID WORKER ${process.pid}`
+      )
+    );
+  }
+
+

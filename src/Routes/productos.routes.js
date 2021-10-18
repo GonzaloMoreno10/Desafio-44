@@ -2,9 +2,8 @@ import express from "express";
 const Router = express.Router();
 import {productoController} from '../controllers/productos.controller'
 import { productosRepository } from '../repository/productos.repository';
-import{auth,authSession} from '../middlewares/autenticacion'
+import{auth} from '../middlewares/autenticacion'
 import{usersRepository} from '../repository/users.repository'
-import passport from '../services/passport.facebook'
 import methodOverride from 'method-override'
 //Inicializaciones
 
