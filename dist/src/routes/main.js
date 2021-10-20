@@ -42,7 +42,7 @@ router.get('/randoms', (req, res) => {
     cantidad: cantidad
   });
   computo.on('message', calc => {
-    res.json("Hola");
+    res.json(calc);
   });
 });
 router.get('/cluster', (req, res) => {

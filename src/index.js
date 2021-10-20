@@ -11,7 +11,7 @@ import {StoreOptions} from './services/session';
 import session from 'express-session'
 import passport from 'passport'
 import flash from 'connect-flash'
-import cluster from "cluster"
+import minimist from 'minimist';
 import os from 'os'
 const app = express();
 const publicPath = path.resolve(__dirname, '../public');
@@ -69,8 +69,8 @@ const Server = http.Server(app);
 //Inicio el servidor de socket
 initIo(Server);
 
-const numCpus = os.cpus().length;
-if (cluster.isMaster) {
+//const numCpus = os.cpus().length;
+/*if (cluster.isMaster) {
     console.log(`NUMERO DE CPUS ===> ${numCpus}`);
     console.log(`PID MASTER ${process.pid}`);
   
@@ -85,13 +85,15 @@ if (cluster.isMaster) {
   } else {
     /* --------------------------------------------------------------------------- */
     /* WORKERS */
-    const PORT = 8080;
+    
+    const argumentos = minimist(process.argv.slice(2));
+    export const PORT = argumentos.puerto || 8080;
   
     Server.listen(PORT, () =>
       console.log(
         `Servidor express escuchando en el puerto ${PORT} - PID WORKER ${process.pid}`
       )
     );
-  }
+ 
 
 

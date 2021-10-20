@@ -1,5 +1,10 @@
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.PORT = void 0;
+
 var path = _interopRequireWildcard(require("path"));
 
 var _expressHandlebars = _interopRequireDefault(require("express-handlebars"));
@@ -26,7 +31,7 @@ var _passport = _interopRequireDefault(require("passport"));
 
 var _connectFlash = _interopRequireDefault(require("connect-flash"));
 
-var _cluster = _interopRequireDefault(require("cluster"));
+var _minimist = _interopRequireDefault(require("minimist"));
 
 var _os = _interopRequireDefault(require("os"));
 
@@ -86,27 +91,26 @@ app.use("/api", _main.default);
 var Server = _http.default.Server(app); //Inicio el servidor de socket
 
 
-(0, _socketIo.initIo)(Server);
+(0, _socketIo.initIo)(Server); //const numCpus = os.cpus().length;
 
-var numCpus = _os.default.cpus().length;
+/*if (cluster.isMaster) {
+    console.log(`NUMERO DE CPUS ===> ${numCpus}`);
+    console.log(`PID MASTER ${process.pid}`);
+  
+    for (let i = 0; i < numCpus; i++) {
+      cluster.fork();
+    }
+  
+    cluster.on('exit', (worker) => {
+      console.log(`Worker ${worker.process.pid} died at ${Date()}`);
+      cluster.fork();
+    });
+  } else {
+    /* --------------------------------------------------------------------------- */
 
-if (_cluster.default.isMaster) {
-  console.log("NUMERO DE CPUS ===> ".concat(numCpus));
-  console.log("PID MASTER ".concat(process.pid));
+/* WORKERS */
 
-  for (var i = 0; i < numCpus; i++) {
-    _cluster.default.fork();
-  }
-
-  _cluster.default.on('exit', worker => {
-    console.log("Worker ".concat(worker.process.pid, " died at ").concat(Date()));
-
-    _cluster.default.fork();
-  });
-} else {
-  /* --------------------------------------------------------------------------- */
-
-  /* WORKERS */
-  var PORT = 8080;
-  Server.listen(PORT, () => console.log("Servidor express escuchando en el puerto ".concat(PORT, " - PID WORKER ").concat(process.pid)));
-}
+var argumentos = (0, _minimist.default)(process.argv.slice(2));
+var PORT = argumentos.puerto || 8080;
+exports.PORT = PORT;
+Server.listen(PORT, () => console.log("Servidor express escuchando en el puerto ".concat(PORT, " - PID WORKER ").concat(process.pid)));
