@@ -3,15 +3,16 @@ module.exports = {
         name: 'app1',
         script: 'dist/src/index.js',
         watch: true,
-        instances:4,
+        instances:1,
         autorestart:true,
-        args:'--puerto=8081'
+        args:'--puerto=8081',
+        exec_mode:'fork'
     },
     {
         name:'app2',
         script: 'dist/src/index.js',
         watch:true,
-        instances:4,
+        instances:1,
         autorestart:true,
         args: '--puerto=8082'
     }]
