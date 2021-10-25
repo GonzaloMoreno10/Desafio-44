@@ -33,7 +33,11 @@ var _connectFlash = _interopRequireDefault(require("connect-flash"));
 
 var _minimist = _interopRequireDefault(require("minimist"));
 
-var _os = _interopRequireDefault(require("os"));
+var _compression = _interopRequireDefault(require("compression"));
+
+var _log4js = _interopRequireDefault(require("log4js"));
+
+var _log4js2 = require("./config/log4js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -42,25 +46,35 @@ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "functio
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 var app = (0, _express.default)();
-var publicPath = path.resolve(__dirname, '../public');
+var publicPath = path.resolve(__dirname, "../public");
 
-require('./services/mongo');
+var warnError = _log4js.default.getLogger();
 
-require('./services/passport.local');
+var consoleLogger = _log4js.default.getLogger('consoleLogger');
 
-app.set('port', process.env.port || 8080);
-app.set('views', path.resolve(__dirname, 'views'));
-app.engine('.hbs', (0, _expressHandlebars.default)({
+var errorLogger = _log4js.default.getLogger('errorLogger');
+
+_log4js.default.configure(_log4js2.log4jsConfig);
+
+require("./services/mongo");
+
+require("./services/passport.local");
+
+app.set("port", process.env.port || 8080);
+app.set("views", path.resolve(__dirname, "views"));
+app.engine(".hbs", (0, _expressHandlebars.default)({
   //Configuro handlebars
-  defaultLayout: 'main',
-  layoutsDir: path.join(app.get('views'), 'layouts'),
-  partialsDir: path.join(app.get('views'), 'partials'),
-  extname: '.hbs',
+  defaultLayout: "main",
+  layoutsDir: path.join(app.get("views"), "layouts"),
+  partialsDir: path.join(app.get("views"), "partials"),
+  extname: ".hbs",
   handlebars: (0, _allowPrototypeAccess.allowInsecurePrototypeAccess)(_handlebars.default)
 }));
-app.set('view engine', '.hbs'); //Middlewares
+console.log(process.env.NODE_ENV);
+app.set("view engine", ".hbs"); //Middlewares
 
 app.use((0, _expressSession.default)(_session.StoreOptions));
+app.use(_compression.default);
 app.use((0, _connectFlash.default)());
 app.use(_passport.default.initialize());
 app.use(_passport.default.session());
@@ -69,7 +83,7 @@ app.use((0, _cookieParser.default)());
 app.use(_express.default.urlencoded({
   extended: true
 }));
-app.use(_express.default.static(path.join(__dirname, '../public')));
+app.use(_express.default.static(path.join(__dirname, "../public")));
 app.use((req, res, next) => {
   res.locals.user = req.user || null;
 
@@ -81,8 +95,8 @@ app.use((req, res, next) => {
     }
   }
 
-  res.locals.success_msg = req.flash('success_msg');
-  res.locals.error_msg = req.flash('error_msg');
+  res.locals.success_msg = req.flash("success_msg");
+  res.locals.error_msg = req.flash("error_msg");
   res.locals.error = req.flash("error");
   next();
 });
@@ -113,4 +127,8 @@ var Server = _http.default.Server(app); //Inicio el servidor de socket
 var argumentos = (0, _minimist.default)(process.argv.slice(2));
 var PORT = argumentos.puerto || 8080;
 exports.PORT = PORT;
-Server.listen(PORT, () => console.log("Servidor express escuchando en el puerto ".concat(PORT, " - PID WORKER ").concat(process.pid)));
+Server.listen(PORT, () => {
+  warnError.warn('Este es un wARN de ejemplo');
+  errorLogger.error('Este es un error de ejemplo');
+  consoleLogger.info("Servidor express escuchando en el puerto ".concat(PORT, " - PID WORKER ").concat(process.pid));
+});

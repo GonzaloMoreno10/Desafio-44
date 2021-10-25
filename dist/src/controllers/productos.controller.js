@@ -45,7 +45,7 @@ class ProductosController {
 
       if (!item) {
         return res.status(404).json({
-          msg: 'Producto no encontrado'
+          msg: "Producto no encontrado"
         });
       }
 
@@ -79,7 +79,7 @@ class ProductosController {
       var id = yield _productos.productosRepository.createProducto(producto);
       var newItem = yield _productos.productosRepository.getAllproductos(id);
       req.flash("success_msg", "Producto creado correctamente");
-      res.redirect('/api/productos/vista');
+      res.redirect("/api/productos/vista");
     })();
   }
 
@@ -100,7 +100,7 @@ class ProductosController {
 
       if (!title || !price || !stock || !code || !description || !image) {
         return res.status(400).json({
-          msg: 'Invalid body'
+          msg: "Invalid body"
         });
       }
 
@@ -108,7 +108,7 @@ class ProductosController {
 
       if (!productoOriginal) {
         return res.status(404).json({
-          msg: 'Producto no encontrado'
+          msg: "Producto no encontrado"
         });
       }
 
@@ -123,7 +123,7 @@ class ProductosController {
       yield _productos.productosRepository.update(id, prod);
       var item = yield _productos.productosRepository.getProductosById(id);
       req.flash("success_msg", "Producto actualizado correctamente");
-      return res.redirect('/api/productos/vista');
+      return res.redirect("/api/productos/vista");
     })();
   }
 
@@ -136,12 +136,12 @@ class ProductosController {
       var producto = yield _productos.productosRepository.delete(id);
 
       if (!producto) {
-        return res.redirect('/api/productos/vista');
+        return res.redirect("/api/productos/vista");
       }
 
       yield _productos.productosRepository.delete(id);
       req.flash("success_msg", "Producto Eliminado correctamente");
-      res.redirect('/api/productos/vista');
+      res.redirect("/api/productos/vista");
     })();
   }
 
