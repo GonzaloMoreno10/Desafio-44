@@ -7,13 +7,19 @@
     "build": "babel src -d dist/src",
     "example": "npm run build && node dist/src/index.js",
     "start": "npm run build --watch && npm run dev",
+    "start:fork": "node dist/src/index.js --puerto=8081",
+    "start:cluster": "node dist/src/index.js --puerto=8082 --cluster",
     "serve": "babel-node index.js",
     "prod": "pm2 start ./src/config/ecosystem.config.js",
     "dev": "npm run build && pm2 start dist/src/index.js",
     "test": "jest",
     "rollback:db": "npx knex migrate:rollback --env development",
     "migrate:db": "npx knex migrate:latest --env development",
-    "seed:db": "npx knex seed:run --env development"
+    "seed:db": "npx knex seed:run --env development",
+    "artillery-quick:cluster": "artillery quick --count 50 -n 40 http://localhost:8081/api/processInfo",
+    "artillery-quick:fork": "artillery quick --count 50 -n 40 http://localhost:8082/api/processInfo",
+    "artillery:fork": "artillery run src/config/artillery/testFork.yml",
+    "artillery:cluster": "artillery run src/config/artillery/testCluster.yml"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +27,7 @@
   "dependencies": {
     "@babel/plugin-transform-regenerator": "^7.14.5",
     "@handlebars/allow-prototype-access": "^1.0.5",
+    "artillery": "^1.7.9",
     "babel-polyfill": "^6.26.0",
     "bcrypt": "^5.0.1",
     "compression": "^1.7.4",

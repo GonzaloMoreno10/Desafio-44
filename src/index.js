@@ -1,4 +1,5 @@
 import * as path from "path";
+import cluster from 'cluster';
 import exphbs from "express-handlebars";
 import Handlebars from "handlebars";
 import { allowInsecurePrototypeAccess } from "@handlebars/allow-prototype-access";
@@ -13,8 +14,8 @@ import passport from "passport";
 import flash from "connect-flash";
 import minimist from "minimist";
 import compression from "compression";
+import os from 'os';
 const app = express();
-const publicPath = path.resolve(__dirname, "../public");
 import log4js from "log4js";
 const warnError = log4js.getLogger();
 const consoleLogger = log4js.getLogger('consoleLogger');
@@ -41,7 +42,6 @@ app.engine(
   })
 );
 
-console.log(process.env.NODE_ENV);
 
 app.set("view engine", ".hbs");
 
@@ -77,32 +77,34 @@ app.use("/api", Router);
 const Server = http.Server(app);
 
 //Inicio el servidor de socket
-initIo(Server);
 
-//const numCpus = os.cpus().length;
-/*if (cluster.isMaster) {
-    console.log(`NUMERO DE CPUS ===> ${numCpus}`);
-    console.log(`PID MASTER ${process.pid}`);
-  
-    for (let i = 0; i < numCpus; i++) {
-      cluster.fork();
-    }
-  
-    cluster.on('exit', (worker) => {
-      console.log(`Worker ${worker.process.pid} died at ${Date()}`);
-      cluster.fork();
-    });
-  } else {
-    /* --------------------------------------------------------------------------- */
-/* WORKERS */
 
 const argumentos = minimist(process.argv.slice(2));
-export const PORT = argumentos.puerto || 8080;
+const PORT = argumentos.puerto || 8080;
 
-Server.listen(PORT, () => {
-  warnError.warn('Este es un wARN de ejemplo')
-  errorLogger.error('Este es un error de ejemplo')
-  consoleLogger.info(
-    `Servidor express escuchando en el puerto ${PORT} - PID WORKER ${process.pid}`
+const clusterMode = argumentos.cluster;
+//Obtengo el numero de nucleos disponibles en mi PC
+const numCPUs = os.cpus().length;
+
+
+if (clusterMode && cluster.isMaster) {
+  console.log('Ejecutando modo cluster');
+  console.log(`PID MASTER ${process.pid}`);
+
+  for (let i = 0; i < numCPUs; i++) {
+    cluster.fork();
+  }
+
+  cluster.on('exit', (worker) => {
+    console.log(`Worker ${worker.process.pid} died at ${Date()}`);
+    cluster.fork();
+  });
+} else {
+  /* --------------------------------------------------------------------------- */
+  /* WORKERS */
+  Server.listen(PORT, () =>
+    consoleLogger.info(
+      `Servidor express escuchando en el puerto ${PORT} - PID WORKER ${process.pid}`
+    )
   );
-});
+}

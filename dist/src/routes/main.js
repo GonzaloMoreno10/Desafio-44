@@ -27,7 +27,6 @@ router.use('/productos', _productos.default);
 router.use('/users', _users.default);
 router.get('/processInfo', (req, res) => {
   var data = (0, _processInfo.default)();
-  console.log(data);
   res.render("processInfo", {
     data
   });

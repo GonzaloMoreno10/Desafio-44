@@ -1,11 +1,8 @@
 "use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.PORT = void 0;
-
 var path = _interopRequireWildcard(require("path"));
+
+var _cluster = _interopRequireDefault(require("cluster"));
 
 var _expressHandlebars = _interopRequireDefault(require("express-handlebars"));
 
@@ -35,6 +32,8 @@ var _minimist = _interopRequireDefault(require("minimist"));
 
 var _compression = _interopRequireDefault(require("compression"));
 
+var _os = _interopRequireDefault(require("os"));
+
 var _log4js = _interopRequireDefault(require("log4js"));
 
 var _log4js2 = require("./config/log4js");
@@ -46,7 +45,6 @@ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "functio
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 var app = (0, _express.default)();
-var publicPath = path.resolve(__dirname, "../public");
 
 var warnError = _log4js.default.getLogger();
 
@@ -70,7 +68,6 @@ app.engine(".hbs", (0, _expressHandlebars.default)({
   extname: ".hbs",
   handlebars: (0, _allowPrototypeAccess.allowInsecurePrototypeAccess)(_handlebars.default)
 }));
-console.log(process.env.NODE_ENV);
 app.set("view engine", ".hbs"); //Middlewares
 
 app.use((0, _expressSession.default)(_session.StoreOptions));
@@ -105,30 +102,28 @@ app.use("/api", _main.default);
 var Server = _http.default.Server(app); //Inicio el servidor de socket
 
 
-(0, _socketIo.initIo)(Server); //const numCpus = os.cpus().length;
-
-/*if (cluster.isMaster) {
-    console.log(`NUMERO DE CPUS ===> ${numCpus}`);
-    console.log(`PID MASTER ${process.pid}`);
-  
-    for (let i = 0; i < numCpus; i++) {
-      cluster.fork();
-    }
-  
-    cluster.on('exit', (worker) => {
-      console.log(`Worker ${worker.process.pid} died at ${Date()}`);
-      cluster.fork();
-    });
-  } else {
-    /* --------------------------------------------------------------------------- */
-
-/* WORKERS */
-
 var argumentos = (0, _minimist.default)(process.argv.slice(2));
 var PORT = argumentos.puerto || 8080;
-exports.PORT = PORT;
-Server.listen(PORT, () => {
-  warnError.warn('Este es un wARN de ejemplo');
-  errorLogger.error('Este es un error de ejemplo');
-  consoleLogger.info("Servidor express escuchando en el puerto ".concat(PORT, " - PID WORKER ").concat(process.pid));
-});
+var clusterMode = argumentos.cluster; //Obtengo el numero de nucleos disponibles en mi PC
+
+var numCPUs = _os.default.cpus().length;
+
+if (clusterMode && _cluster.default.isMaster) {
+  console.log('Ejecutando modo cluster');
+  console.log("PID MASTER ".concat(process.pid));
+
+  for (var i = 0; i < numCPUs; i++) {
+    _cluster.default.fork();
+  }
+
+  _cluster.default.on('exit', worker => {
+    console.log("Worker ".concat(worker.process.pid, " died at ").concat(Date()));
+
+    _cluster.default.fork();
+  });
+} else {
+  /* --------------------------------------------------------------------------- */
+
+  /* WORKERS */
+  Server.listen(PORT, () => consoleLogger.info("Servidor express escuchando en el puerto ".concat(PORT, " - PID WORKER ").concat(process.pid)));
+}

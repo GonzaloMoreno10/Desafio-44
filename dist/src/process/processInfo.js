@@ -9,8 +9,6 @@ var _ = require("..");
 
 var numCpus = require('os').cpus().length;
 
-console.log(_.PORT);
-
 function printProcessInfo() {
   var obj = {
     cwd: process.cwd(),
