@@ -1,0 +1,18 @@
+config:
+  target: 'http://localhost:8081'
+  phases:
+    - duration: 5
+      arrivalRate: 50
+      name: Warm up
+  payload:
+    path: 'keys.csv'
+    fields:
+      - '_id'
+scenarios:
+  - name: 'Busca todos los productos y luego solo por id'
+    flow:
+      - get:
+          url: '/api/productos/listar'
+      - think: 10
+      - get:
+          url: '/api/productos/listar?id={{id}}'

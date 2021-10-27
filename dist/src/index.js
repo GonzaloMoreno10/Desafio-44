@@ -35,14 +35,27 @@ var _minimist = _interopRequireDefault(require("minimist"));
 
 var _os = _interopRequireDefault(require("os"));
 
+var _cluster = _interopRequireDefault(require("cluster"));
+
+var _log4js = _interopRequireDefault(require("log4js"));
+
+var _log4js2 = require("./config/log4js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
+var warnError = _log4js.default.getLogger();
+
+var consoleLogger = _log4js.default.getLogger('consoleLogger');
+
+var errorLogger = _log4js.default.getLogger('errorLogger');
+
 var app = (0, _express.default)();
-var publicPath = path.resolve(__dirname, '../public');
+
+_log4js.default.configure(_log4js2.log4jsConfig);
 
 require('./services/mongo');
 
@@ -88,29 +101,29 @@ app.use((req, res, next) => {
 });
 app.use("/api", _main.default);
 
-var Server = _http.default.Server(app); //Inicio el servidor de socket
+var Server = _http.default.Server(app);
 
-
-(0, _socketIo.initIo)(Server); //const numCpus = os.cpus().length;
-
-/*if (cluster.isMaster) {
-    console.log(`NUMERO DE CPUS ===> ${numCpus}`);
-    console.log(`PID MASTER ${process.pid}`);
-  
-    for (let i = 0; i < numCpus; i++) {
-      cluster.fork();
-    }
-  
-    cluster.on('exit', (worker) => {
-      console.log(`Worker ${worker.process.pid} died at ${Date()}`);
-      cluster.fork();
-    });
-  } else {
-    /* --------------------------------------------------------------------------- */
-
-/* WORKERS */
-
+(0, _socketIo.initIo)(Server);
 var argumentos = (0, _minimist.default)(process.argv.slice(2));
 var PORT = argumentos.puerto || 8080;
 exports.PORT = PORT;
-Server.listen(PORT, () => console.log("Servidor express escuchando en el puerto ".concat(PORT, " - PID WORKER ").concat(process.pid)));
+var clusterMode = argumentos.cluster;
+
+var numCPUs = _os.default.cpus().length;
+
+if (clusterMode && _cluster.default.isMaster) {
+  consoleLogger.info('Ejecutando modo cluster');
+  consoleLogger.info("PID MASTER ".concat(process.pid));
+
+  for (var i = 0; i < numCPUs; i++) {
+    _cluster.default.fork();
+  }
+
+  _cluster.default.on('exit', worker => {
+    consoleLogger.info("Worker ".concat(worker.process.pid, " died at ").concat(Date()));
+
+    _cluster.default.fork();
+  });
+} else {
+  Server.listen(PORT, () => consoleLogger.info("Servidor express escuchando en el puerto ".concat(PORT, " - PID WORKER ").concat(process.pid)));
+}

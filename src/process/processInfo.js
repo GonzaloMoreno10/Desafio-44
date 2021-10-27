@@ -1,7 +1,6 @@
 import { PORT } from '..';
 const numCpus = require('os').cpus().length;
 
-console.log(PORT)
 export default function printProcessInfo() {
     
     let obj = {

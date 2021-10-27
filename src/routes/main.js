@@ -15,7 +15,6 @@ router.use('/users',userRoute)
 
 router.get('/processInfo',(req,res)=>{
     let data = printProcessInfo();
-    console.log(data);
     res.render("processInfo",{data})
 })
 

@@ -12,9 +12,17 @@ import session from 'express-session'
 import passport from 'passport'
 import flash from 'connect-flash'
 import minimist from 'minimist';
-import os from 'os'
+import os from 'os';
+import cluster from 'cluster';
+import log4js from "log4js";
+import { log4jsConfig } from "./config/log4js";
+const warnError = log4js.getLogger();
+const consoleLogger = log4js.getLogger('consoleLogger');
+const errorLogger = log4js.getLogger('errorLogger');
 const app = express();
-const publicPath = path.resolve(__dirname, '../public');
+
+
+log4js.configure(log4jsConfig);
 
 require('./services/mongo')
 require('./services/passport.local');
@@ -66,35 +74,36 @@ app.use("/api", Router);
 
 const Server = http.Server(app);
 
-//Inicio el servidor de socket
+
 initIo(Server);
 
-//const numCpus = os.cpus().length;
-/*if (cluster.isMaster) {
-    console.log(`NUMERO DE CPUS ===> ${numCpus}`);
-    console.log(`PID MASTER ${process.pid}`);
-  
-    for (let i = 0; i < numCpus; i++) {
-      cluster.fork();
-    }
-  
-    cluster.on('exit', (worker) => {
-      console.log(`Worker ${worker.process.pid} died at ${Date()}`);
-      cluster.fork();
-    });
-  } else {
-    /* --------------------------------------------------------------------------- */
-    /* WORKERS */
-    
-    const argumentos = minimist(process.argv.slice(2));
-    export const PORT = argumentos.puerto || 8080;
-    
-  
-    Server.listen(PORT, () =>
-      console.log(
-        `Servidor express escuchando en el puerto ${PORT} - PID WORKER ${process.pid}`
-      )
-    );
- 
+const argumentos = minimist(process.argv.slice(2));
+export const PORT = argumentos.puerto || 8080;
+
+const clusterMode = argumentos.cluster;
+
+const numCPUs = os.cpus().length;
+
+
+if (clusterMode && cluster.isMaster) {
+  consoleLogger.info('Ejecutando modo cluster');
+  consoleLogger.info(`PID MASTER ${process.pid}`);
+
+  for (let i = 0; i < numCPUs; i++) {
+    cluster.fork();
+  }
+
+  cluster.on('exit', (worker) => {
+    consoleLogger.info(`Worker ${worker.process.pid} died at ${Date()}`);
+    cluster.fork();
+  });
+} else {
+
+  Server.listen(PORT, () =>
+    consoleLogger.info(
+      `Servidor express escuchando en el puerto ${PORT} - PID WORKER ${process.pid}`
+    )
+  );
+}
 
 
