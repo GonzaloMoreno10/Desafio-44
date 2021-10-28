@@ -30,8 +30,6 @@ var _connectFlash = _interopRequireDefault(require("connect-flash"));
 
 var _minimist = _interopRequireDefault(require("minimist"));
 
-var _compression = _interopRequireDefault(require("compression"));
-
 var _os = _interopRequireDefault(require("os"));
 
 var _log4js = _interopRequireDefault(require("log4js"));
@@ -44,13 +42,13 @@ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "functio
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-var app = (0, _express.default)();
-
 var warnError = _log4js.default.getLogger();
 
 var consoleLogger = _log4js.default.getLogger('consoleLogger');
 
 var errorLogger = _log4js.default.getLogger('errorLogger');
+
+var app = (0, _express.default)();
 
 _log4js.default.configure(_log4js2.log4jsConfig);
 
@@ -71,7 +69,7 @@ app.engine(".hbs", (0, _expressHandlebars.default)({
 app.set("view engine", ".hbs"); //Middlewares
 
 app.use((0, _expressSession.default)(_session.StoreOptions));
-app.use(_compression.default);
+app.use(compression);
 app.use((0, _connectFlash.default)());
 app.use(_passport.default.initialize());
 app.use(_passport.default.session());

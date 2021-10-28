@@ -7,22 +7,23 @@ import http from "http";
 import { initIo } from "./services/socketIo.js";
 import express from "express";
 import Router from "./routes/main";
-import cookieParser from "cookie-parser";
-import { StoreOptions } from "./services/session";
-import session from "express-session";
-import passport from "passport";
-import flash from "connect-flash";
-import minimist from "minimist";
-import compression from "compression";
+import cookieParser from 'cookie-parser';
+import {StoreOptions} from './services/session';
+import session from 'express-session'
+import passport from 'passport'
+import flash from 'connect-flash'
+import minimist from 'minimist';
 import os from 'os';
-const app = express();
 import log4js from "log4js";
+import { log4jsConfig } from "./config/log4js";
 const warnError = log4js.getLogger();
 const consoleLogger = log4js.getLogger('consoleLogger');
 const errorLogger = log4js.getLogger('errorLogger');
+const app = express();
 
-import { log4jsConfig } from "./config/log4js";
+
 log4js.configure(log4jsConfig);
+
 
 require("./services/mongo");
 require("./services/passport.local");

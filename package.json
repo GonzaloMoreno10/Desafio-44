@@ -9,6 +9,8 @@
     "start": "npm run build --watch && npm run dev",
     "start:fork": "node dist/src/index.js --puerto=8081",
     "start:cluster": "node dist/src/index.js --puerto=8082 --cluster",
+    "start:inspect": "node --inspect dist/src/index.js",
+    "start:profiling": "node --prof dist/src/index.js",
     "serve": "babel-node index.js",
     "prod": "pm2 start ./src/config/ecosystem.config.js",
     "dev": "npm run build && pm2 start dist/src/index.js",
