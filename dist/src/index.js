@@ -30,6 +30,8 @@ var _connectFlash = _interopRequireDefault(require("connect-flash"));
 
 var _minimist = _interopRequireDefault(require("minimist"));
 
+var _compression = _interopRequireDefault(require("compression"));
+
 var _os = _interopRequireDefault(require("os"));
 
 var _log4js = _interopRequireDefault(require("log4js"));
@@ -69,7 +71,7 @@ app.engine(".hbs", (0, _expressHandlebars.default)({
 app.set("view engine", ".hbs"); //Middlewares
 
 app.use((0, _expressSession.default)(_session.StoreOptions));
-app.use(compression);
+app.use(_compression.default);
 app.use((0, _connectFlash.default)());
 app.use(_passport.default.initialize());
 app.use(_passport.default.session());

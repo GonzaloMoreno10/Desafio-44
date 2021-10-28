@@ -13,6 +13,7 @@ import session from 'express-session'
 import passport from 'passport'
 import flash from 'connect-flash'
 import minimist from 'minimist';
+import compression from "compression";
 import os from 'os';
 import log4js from "log4js";
 import { log4jsConfig } from "./config/log4js";
