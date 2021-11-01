@@ -28,7 +28,7 @@ require('./services/mongo')
 require('./services/passport.local');
 
 
-app.set('port',process.env.port ||8080);
+app.set('port',process.env.PORT ||8080);
 app.set('views', path.resolve(__dirname, 'views'));
 
 app.engine('.hbs', exphbs({  //Configuro handlebars
