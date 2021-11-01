@@ -75,7 +75,7 @@ app.use("/api", Router);
 const Server = http.Server(app);
 
 
-initIo(Server);
+//initIo(Server);
 
 const argumentos = minimist(process.argv.slice(2));
 export const PORT = argumentos.puerto || 8080;
