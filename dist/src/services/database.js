@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.sqliteDB = exports.mySQLDB = void 0;
+exports.mySQLDB = exports.sqliteDB = void 0;
 
 var _knex = _interopRequireDefault(require("knex"));
 

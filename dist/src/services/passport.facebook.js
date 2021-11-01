@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.isLoggedIn = exports.default = void 0;
+exports.default = exports.isLoggedIn = void 0;
 
 var _passport = _interopRequireDefault(require("passport"));
 
