@@ -40,7 +40,6 @@ app.engine('.hbs', exphbs({  //Configuro handlebars
     handlebars: allowInsecurePrototypeAccess(Handlebars)
 }));
 
-console.log(publicPath)
 
 app.set('view engine', '.hbs');
 

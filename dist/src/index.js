@@ -72,7 +72,6 @@ app.engine('.hbs', (0, _expressHandlebars.default)({
   extname: '.hbs',
   handlebars: (0, _allowPrototypeAccess.allowInsecurePrototypeAccess)(_handlebars.default)
 }));
-console.log(publicPath);
 app.set('view engine', '.hbs'); //Middlewares
 
 app.use((0, _expressSession.default)(_session.StoreOptions));
