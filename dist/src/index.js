@@ -127,5 +127,5 @@ if (clusterMode && _cluster.default.isMaster) {
     _cluster.default.fork();
   });
 } else {
-  Server.listen(PORT, () => consoleLogger.info("Servidor express escuchando en el puerto ".concat(PORT, " - PID WORKER ").concat(process.pid)));
+  Server.listen(app.get('port'), () => consoleLogger.info("Servidor express escuchando en el puerto ".concat(app.get('port'), " - PID WORKER ").concat(process.pid)));
 }

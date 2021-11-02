@@ -105,9 +105,9 @@ if (clusterMode && cluster.isMaster) {
   });
 } else {
 
-  Server.listen(PORT, () =>
+  Server.listen(app.get('port'), () =>
     consoleLogger.info(
-      `Servidor express escuchando en el puerto ${PORT} - PID WORKER ${process.pid}`
+      `Servidor express escuchando en el puerto ${app.get('port')} - PID WORKER ${process.pid}`
     )
   );
 }
