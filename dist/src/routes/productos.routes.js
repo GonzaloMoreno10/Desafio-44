@@ -42,16 +42,10 @@ Router.get("/vista", _autenticacion.auth, /*#__PURE__*/function () {
     var products = yield _productos2.productosRepository.getAllproductos();
     console.log(products);
     var firstLogin = req.user.firstLogin;
-
-    if (firstLogin) {
-      var user = req.user;
-      user.firstLogin = false;
-      yield _users.usersRepository.updateUser(user._id, user);
-      res.render("products/allProducts", {
-        products,
-        firstLogin
-      });
-    }
+    res.render("products/allProducts", {
+      products,
+      firstLogin
+    });
   });
 
   return function (_x, _x2) {

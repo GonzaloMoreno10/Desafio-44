@@ -27,13 +27,8 @@ Router.get("/vista",auth,async (req, res) => {
    let products = await productosRepository.getAllproductos();
    console.log(products)
    let firstLogin = req.user.firstLogin;
-   if(firstLogin){
-    let user = req.user;
-    user.firstLogin = false;
-    await usersRepository.updateUser(user._id,user);
-   res.render("products/allProducts",{products,firstLogin})
    
-} 
+   res.render("products/allProducts",{products,firstLogin})
 })
 
 Router.get("/new",auth,(req, res) => {
