@@ -56,9 +56,10 @@ var errorLogger = _log4js.default.getLogger('errorLogger');
 var app = (0, _express.default)();
 
 _log4js.default.configure(_log4js2.log4jsConfig);
-/*require('./services/mongo')
-require('./services/passport.local');*/
 
+require('./services/mongo');
+
+require('./services/passport.local');
 
 app.set('port', process.env.PORT || 8080);
 app.set('views', path.resolve(__dirname, 'views'));

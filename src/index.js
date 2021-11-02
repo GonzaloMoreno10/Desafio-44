@@ -24,8 +24,8 @@ const app = express();
 
 log4js.configure(log4jsConfig);
 
-/*require('./services/mongo')
-require('./services/passport.local');*/
+require('./services/mongo')
+require('./services/passport.local');
 
 
 app.set('port',process.env.PORT ||8080);

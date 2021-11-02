@@ -1,4 +1,4 @@
-/*import knex from 'knex';
+import knex from 'knex';
 let mongo = require('mongoose')
 
 export const sqliteDB = knex({
@@ -51,4 +51,4 @@ mySQLDB.schema.hasTable('productos').then((exists) => {
         console.log('DONE');
       });
   }
-});*/
+});
