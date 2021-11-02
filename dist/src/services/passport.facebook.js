@@ -24,6 +24,12 @@ var strategyOptions = {
   callbackURL: 'http://localhost:8080/api/users/auth/facebook/callback',
   profileFields: ['id', 'displayName', 'photos', 'emails', 'name']
 };
+var strategyOptionsHeroku = {
+  clientID: _venv.FACEBOOK_CLIENT_ID,
+  clientSecret: _venv.FACEBOOK_SECRET,
+  callbackURL: 'https://ecommercegmoreno.herokuapp.com/api/users/auth/facebook/callback',
+  profileFields: ['id', 'displayName', 'photos', 'emails', 'name']
+};
 
 var loginFunc = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator(function* (accessToken, refreshToken, profile, done) {
@@ -36,7 +42,7 @@ var loginFunc = /*#__PURE__*/function () {
   };
 }();
 
-_passport.default.use(new FaceBookStrategy(strategyOptions, loginFunc));
+process.env.PORT ? _passport.default.use(new FaceBookStrategy(strategyOptionsHeroku, loginFunc)) : _passport.default.use(new FaceBookStrategy(strategyOptions, loginFunc));
 
 _passport.default.serializeUser(function (user, cb) {
   cb(null, user);

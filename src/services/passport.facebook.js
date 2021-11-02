@@ -12,6 +12,13 @@ const strategyOptions = {
   profileFields: ['id', 'displayName', 'photos', 'emails','name'],
 };
 
+const strategyOptionsHeroku = {
+  clientID: FACEBOOK_CLIENT_ID,
+  clientSecret: FACEBOOK_SECRET,
+  callbackURL: 'https://ecommercegmoreno.herokuapp.com/api/users/auth/facebook/callback',
+  profileFields: ['id', 'displayName', 'photos', 'emails','name'],
+};
+
 const loginFunc = async (
   accessToken,
   refreshToken,
@@ -22,8 +29,10 @@ const loginFunc = async (
   return done(null, profile);
 };
 
+process.env.PORT ?
+passport.use(new FaceBookStrategy(strategyOptionsHeroku, loginFunc))
+:
 passport.use(new FaceBookStrategy(strategyOptions, loginFunc));
-
 passport.serializeUser(function (user, cb) {
   cb(null, user);
 });
