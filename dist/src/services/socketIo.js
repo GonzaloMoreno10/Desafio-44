@@ -43,7 +43,7 @@ var initIo = /*#__PURE__*/function () {
         var msgSchema = new _normalizr.schema.Array(msg);
         socket.on('mensajes', /*#__PURE__*/function () {
           var _ref3 = _asyncToGenerator(function* (data) {
-            //console.log ('Me llego un Mensaje y lo voy a guardar');
+            console.log('Me llego un Mensaje y lo voy a guardar');
             var mensaje = new _Mensaje.default();
             mensaje.author.id = data.author.email;
             mensaje.author.nombre = data.author.nombre;

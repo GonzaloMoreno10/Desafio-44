@@ -26,7 +26,7 @@ export const initIo = async server => {
     const msgSchema = new schema.Array (msg);
 
     socket.on ('mensajes', async data => {
-      //console.log ('Me llego un Mensaje y lo voy a guardar');
+      console.log ('Me llego un Mensaje y lo voy a guardar');
       let mensaje = new Mensaje ();
       mensaje.author.id = data.author.email;
       mensaje.author.nombre = data.author.nombre;
