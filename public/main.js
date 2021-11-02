@@ -1,4 +1,9 @@
-const socket = io.connect('http://localhost:8080', { forceNew: true });
+const socket
+process.env.PORT ?
+socket = io.connect(`https://ecommercegmoreno.herokuapp.com:${process.env.PORT}`, { forceNew: true })
+:
+socket = io.connect('http://localhost:8080', { forceNew: true })
+
 
 // Cuando arrancamos pedimos la data que hay actualmente enviando un socket
 socket.emit('askProducts');
