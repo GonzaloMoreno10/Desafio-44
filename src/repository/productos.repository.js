@@ -1,4 +1,3 @@
-import { mySQLDB } from '../services/database';
 import productos from '../models/Producto';
 import {products} from '../faker/faker.products'
 
