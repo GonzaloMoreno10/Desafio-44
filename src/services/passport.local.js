@@ -1,4 +1,4 @@
-import passport from 'passport';
+/*import passport from 'passport';
 import passportLocal from 'passport-local';
 import users from '../models/User';
 import { JsonWebToken } from 'jsonwebtoken';
@@ -42,4 +42,4 @@ const login = async (req, userName, password, done) => {
     users.findById(userId, function (err, user) {
       done(err, user);
     });
-  });
+  });*/

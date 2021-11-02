@@ -1,4 +1,4 @@
-import {Server} from 'socket.io';
+/*import {Server} from 'socket.io';
 import Producto from '../models/Producto.js';
 import Mensaje from '../models/Mensaje.js';
 import {productosRepository} from '../repository/productos.repository';
@@ -91,3 +91,4 @@ export const initIo = async server => {
     });
   });
 };
+*/
