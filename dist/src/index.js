@@ -55,11 +55,9 @@ var errorLogger = _log4js.default.getLogger('errorLogger');
 
 var app = (0, _express.default)();
 
-_log4js.default.configure(_log4js2.log4jsConfig);
+_log4js.default.configure(_log4js2.log4jsConfig); //require('./services/mongo')
+//require('./services/passport.local');
 
-require('./services/mongo');
-
-require('./services/passport.local');
 
 app.set('port', process.env.PORT || 8080);
 app.set('views', path.resolve(__dirname, 'views'));
@@ -101,9 +99,9 @@ app.use((req, res, next) => {
 });
 app.use("/api", _main.default);
 
-var Server = _http.default.Server(app);
+var Server = _http.default.Server(app); //initIo(Server);
 
-(0, _socketIo.initIo)(Server);
+
 var argumentos = (0, _minimist.default)(process.argv.slice(2));
 var PORT = argumentos.puerto || 8080;
 exports.PORT = PORT;
