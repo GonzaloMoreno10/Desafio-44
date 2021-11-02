@@ -20,6 +20,7 @@ const warnError = log4js.getLogger();
 const consoleLogger = log4js.getLogger('consoleLogger');
 const errorLogger = log4js.getLogger('errorLogger');
 const app = express();
+const publicPath = path.resolve(__dirname, '../../public');
 
 
 log4js.configure(log4jsConfig);
@@ -39,7 +40,7 @@ app.engine('.hbs', exphbs({  //Configuro handlebars
     handlebars: allowInsecurePrototypeAccess(Handlebars)
 }));
 
-
+console.log(publicPath)
 
 app.set('view engine', '.hbs');
 
@@ -52,7 +53,7 @@ app.use(passport.session());
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, '../public')));
+app.use(express.static(publicPath));
 
 app.use((req,res,next)=>{
     res.locals.user = req.user || null;
@@ -74,14 +75,14 @@ app.use((req,res,next)=>{
 
 app.use("/api", Router);
 
-app.use('/',(req,res)=>{
-  res.send('Hello World')
-})
+/*app.use('/',(req,res)=>{
+  res.redirect('/api/users/login')
+})*/
 
 const Server = http.Server(app);
 
 
-//initIo(Server);
+initIo(Server);
 
 const argumentos = minimist(process.argv.slice(2));
 export const PORT = argumentos.puerto || 8080;

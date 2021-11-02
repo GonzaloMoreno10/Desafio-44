@@ -54,6 +54,7 @@ var consoleLogger = _log4js.default.getLogger('consoleLogger');
 var errorLogger = _log4js.default.getLogger('errorLogger');
 
 var app = (0, _express.default)();
+var publicPath = path.resolve(__dirname, '../../public');
 
 _log4js.default.configure(_log4js2.log4jsConfig);
 
@@ -71,6 +72,7 @@ app.engine('.hbs', (0, _expressHandlebars.default)({
   extname: '.hbs',
   handlebars: (0, _allowPrototypeAccess.allowInsecurePrototypeAccess)(_handlebars.default)
 }));
+console.log(publicPath);
 app.set('view engine', '.hbs'); //Middlewares
 
 app.use((0, _expressSession.default)(_session.StoreOptions));
@@ -82,7 +84,7 @@ app.use((0, _cookieParser.default)());
 app.use(_express.default.urlencoded({
   extended: true
 }));
-app.use(_express.default.static(path.join(__dirname, '../public')));
+app.use(_express.default.static(publicPath));
 app.use((req, res, next) => {
   res.locals.user = req.user || null;
 
@@ -100,13 +102,13 @@ app.use((req, res, next) => {
   next();
 });
 app.use("/api", _main.default);
-app.use('/', (req, res) => {
-  res.send('Hello World');
-});
+/*app.use('/',(req,res)=>{
+  res.redirect('/api/users/login')
+})*/
 
-var Server = _http.default.Server(app); //initIo(Server);
+var Server = _http.default.Server(app);
 
-
+(0, _socketIo.initIo)(Server);
 var argumentos = (0, _minimist.default)(process.argv.slice(2));
 var PORT = argumentos.puerto || 8080;
 exports.PORT = PORT;
