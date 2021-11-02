@@ -98,10 +98,13 @@ app.use((req, res, next) => {
   next();
 });
 app.use("/api", _main.default);
+app.use('/', (req, res) => {
+  res.send('Hello World');
+});
 
-var Server = _http.default.Server(app); //initIo(Server);
+var Server = _http.default.Server(app);
 
-
+(0, _socketIo.initIo)(Server);
 var argumentos = (0, _minimist.default)(process.argv.slice(2));
 var PORT = argumentos.puerto || 8080;
 exports.PORT = PORT;

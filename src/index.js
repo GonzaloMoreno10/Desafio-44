@@ -70,12 +70,18 @@ app.use((req,res,next)=>{
     next();
 })
 
+
+
 app.use("/api", Router);
+
+app.use('/',(req,res)=>{
+  res.send('Hello World')
+})
 
 const Server = http.Server(app);
 
 
-//initIo(Server);
+initIo(Server);
 
 const argumentos = minimist(process.argv.slice(2));
 export const PORT = argumentos.puerto || 8080;

@@ -13,6 +13,7 @@ router.use('/productos',productoRoute);
 
 router.use('/users',userRoute)
 
+
 router.get('/processInfo',(req,res)=>{
     let data = printProcessInfo();
     res.render("processInfo",{data})
