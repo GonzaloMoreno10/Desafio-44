@@ -39,17 +39,18 @@ Router.get("/listar", _productos.productoController.getProductPagination);
 Router.get("/listar/:id", _autenticacion.auth, _productos.productoController.getProductosByid);
 Router.get("/vista", _autenticacion.auth, /*#__PURE__*/function () {
   var _ref = _asyncToGenerator(function* (req, res) {
-    var products = yield _productos2.productosRepository.getProductsPagination(req.query.page);
+    var products = yield _productos2.productosRepository.getAllproductos();
+    console.log(products);
     var firstLogin = req.user.firstLogin;
-    res.render("products/allProducts", {
-      products,
-      firstLogin
-    });
 
     if (firstLogin) {
       var user = req.user;
       user.firstLogin = false;
       yield _users.usersRepository.updateUser(user._id, user);
+      res.render("products/allProducts", {
+        products,
+        firstLogin
+      });
     }
   });
 

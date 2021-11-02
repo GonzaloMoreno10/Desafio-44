@@ -35,5 +35,4 @@ var ProductSchema = new Schema({
     type: String
   }
 });
-ProductSchema.plugin(_mongoosePaginateV.default);
 module.exports = mongoose.model('productos', ProductSchema);

@@ -24,14 +24,15 @@ Router.get("/listar", productoController.getProductPagination);
 Router.get("/listar/:id", auth,productoController.getProductosByid);
 
 Router.get("/vista",auth,async (req, res) => {
-   let products = await productosRepository.getProductsPagination(req.query.page);
+   let products = await productosRepository.getAllproductos();
+   console.log(products)
    let firstLogin = req.user.firstLogin;
-   
-   res.render("products/allProducts",{products,firstLogin})
    if(firstLogin){
-       let user = req.user;
+    let user = req.user;
     user.firstLogin = false;
     await usersRepository.updateUser(user._id,user);
+   res.render("products/allProducts",{products,firstLogin})
+   
 } 
 })
 

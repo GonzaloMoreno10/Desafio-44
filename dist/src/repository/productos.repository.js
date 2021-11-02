@@ -5,8 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.productosRepository = void 0;
 
-var _database = require("../services/database");
-
 var _Producto = _interopRequireDefault(require("../models/Producto"));
 
 var _faker = require("../faker/faker.products");

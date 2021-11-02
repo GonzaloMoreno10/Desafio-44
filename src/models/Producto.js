@@ -12,7 +12,6 @@ const  ProductSchema = new Schema({
     image:{type:String}
 })
 
-ProductSchema.plugin(mongoosePaginate)
 module.exports = mongoose.model('productos',ProductSchema);
 
 
