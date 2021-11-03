@@ -7,6 +7,7 @@ const  UserSchema = new Schema({
     password:{type:String,required:true},
     lastLogin:{type:Date},
     email:{type:String},
+    admin:{type:Number},
     firstLogin:{type:Boolean}
 })
 

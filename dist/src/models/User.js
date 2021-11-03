@@ -26,6 +26,9 @@ var UserSchema = new Schema({
   email: {
     type: String
   },
+  admin: {
+    type: Number
+  },
   firstLogin: {
     type: Boolean
   }

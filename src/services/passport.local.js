@@ -14,7 +14,7 @@ const strategyOptions = {
 
 const login = async (req, userName, password, done) => {
     const user = await users.findOne({user:userName})
-    
+    console.log(user)
     if (!user) {
       console.log('Usuario no existe')
       return done(null, false, { message: 'Usuario incorrecto.' });

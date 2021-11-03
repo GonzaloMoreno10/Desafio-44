@@ -28,6 +28,7 @@ var login = /*#__PURE__*/function () {
     var user = yield _User.default.findOne({
       user: userName
     });
+    console.log(user);
 
     if (!user) {
       console.log('Usuario no existe');

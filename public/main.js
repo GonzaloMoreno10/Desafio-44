@@ -1,4 +1,4 @@
-let socket= io.connect(`https://ecommercegmoreno.herokuapp.com`, { forceNew: true });
+let socket= io.connect(`https://localhost:8080`, { forceNew: true });
 
 
 

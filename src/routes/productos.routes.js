@@ -31,6 +31,13 @@ Router.get("/vista",auth,async (req, res) => {
    res.render("products/allProducts",{products,firstLogin})
 })
 
+Router.get("/detail/:id",auth,async(req,res)=>{
+  let {id} = req.params;
+  let prod = await productosRepository.getProductosById(id)
+  console.log(prod)
+  res.render("products/detail",prod)
+})
+
 Router.get("/new",auth,(req, res) => {
     res.render("products/newProduct")
  })
