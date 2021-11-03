@@ -1,24 +1,17 @@
-<div class="container" >
-    <div class="card" style="border-radius: 2%">
-        <div class="card-header">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col" id="imagen">
-                        <img src="{{image}}" style="width: 100%;background-color:white" alt="">
-                    </div>
-                    <div class="col" id="text">
-                        <h2>{{title}}</h2>
-                        <br>
-                        <h6>{{description}}</h6>
-                        <h2>${{price}}</h2>
-                        <small>Stock: {{stock}} unidades</small>
-                        <br>
-                        <hr>
-                        <a href="#" class="btn btn-primary w-100">Agregar al carrito</a>
-                    </div>
-                </div>
-
-            </div>
+<div class="container-md-5" id="productDetail">
+    <div class="row">
+        <div class="col">
+            <img src="{{image}}" id="imagen" alt="">
+        </div>
+        <div class="col-md-4" id="text">
+            <h2>{{title}}</h2>
+            <br>
+            <h6>{{description}}</h6>
+            <h2>${{price}}</h2>
+            <small>Stock: {{stock}} unidades</small>
+            <br>
+            <hr>
+            <a href="#" class="btn btn-primary w-100">Agregar al carrito</a>
         </div>
     </div>
 

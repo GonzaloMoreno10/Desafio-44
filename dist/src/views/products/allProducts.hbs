@@ -1,3 +1,4 @@
+
 {{#if products}}
 <br><br>
 {{#if firstLogin}}
@@ -14,12 +15,12 @@
         {{#each products}}
         
         <div class="col-md-3" style="margin-bottom: 20px;padding:10px">
-            <a href="/api/productos/detail/{{id}}" style="text-decoration: none; color:black;">
-            <div class="card" id="productTemplate"  >
+            <a href="/api/productos/detail/{{_id}}" style="text-decoration: none; color:black;">
+            <div class="card" name="productTemplate" id="productTemplate" onmouseover="showDetail('{{_id}}')" onmouseleave="hideDetail('{{_id}}')">
                 <div class="card-body" style="text-align: center">
                     <img style="width: 100%" src="{{image}}">
                 </div>
-                <div class="card-body" style="text-align:left;max-height:400px; padding:10px;overflow:hidden">
+                <div class="card-body" name="detail" id="{{_id}}" style="text-align:left;max-height:400px; padding:10px;overflow:hidden;display:none">
                     <hr>
                     <h4>$ {{price}}</h4>
                     <small>{{title}}</small>
@@ -58,3 +59,4 @@
     </div>
 </div>
 {{/if}}
+<script src="/js/animaciones.js"></script>

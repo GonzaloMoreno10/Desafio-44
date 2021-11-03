@@ -1,3 +1,9 @@
+body{
+    margin:0 auto;
+    background-color: #EDEDED;
+
+}
+
 #nav{
     background-color: #FFF159
 }
@@ -5,19 +11,38 @@
 #productTemplate:hover{
     height: 420px;
     box-shadow: 5px 5px 5px gray;
-    transition: 50ms;
+    transition: 100ms;
+}
 
+
+#productDetail{
+    background-color: white;
+    border-radius: 10px;
+    padding:3%;
+    width:90%
 }
 
 #productTemplate{
-    height:400px
+    height:300px
+}
+
+#text{
+    padding-top:3%;
+    padding-right: 2%;
+    padding-left: 2%;
+    margin:2px;
+    border-radius: 10px;
+}
+
+#imagen{
+    width:100%;
+    margin:2px;
+    padding:2%;
+    border-radius: 10px;
 }
 
 @media only screen and (max-width: 640px) {
 
-    #text{
-        box-sizing: border-box;
-    }
     #itemsNav{
         display: none;
     }
@@ -25,8 +50,12 @@
         width: 100%;
     }
     
-    #imagen{
-        max-width: 100%;
+    #productDetail{
+        width:100%;
+    }
+
+    #text{
+        border-top: 2px solid #EDEDED;
     }
     
      
