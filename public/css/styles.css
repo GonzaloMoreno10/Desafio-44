@@ -8,10 +8,17 @@ body{
     background-color: #FFF159
 }
 
-#productTemplate:hover{
-    height: 420px;
+.productTemplate:hover{
+    height: 500px;
     box-shadow: 5px 5px 5px gray;
     transition: 100ms;
+    max-width: 400px;
+    position: absolute;
+    z-index: 5;
+}
+
+.detail{
+    height: 400px;
 }
 
 
@@ -19,11 +26,12 @@ body{
     background-color: white;
     border-radius: 10px;
     padding:3%;
-    width:90%
 }
 
-#productTemplate{
-    height:300px
+.productTemplate{
+    height:300px;
+    width:300px;
+    background-color: white;
 }
 
 #text{
@@ -34,11 +42,16 @@ body{
     border-radius: 10px;
 }
 
-#imagen{
-    width:100%;
-    margin:2px;
-    padding:2%;
-    border-radius: 10px;
+.imagen{
+  padding:20px;
+  width: 300px;
+  height: 300px;
+  background: white;
+  overflow: hidden;
+}
+
+.imagen img{
+    width: 100%;
 }
 
 @media only screen and (max-width: 640px) {
@@ -54,10 +67,19 @@ body{
         width:100%;
     }
 
+    .imagen{
+        padding:20px;
+        width: 300px;
+        height: 300px;
+        background: white;
+        overflow: hidden;
+      }
+      
+      .imagen img{
+          width: 100%;
+      }
+
     #text{
         border-top: 2px solid #EDEDED;
     }
-    
-     
-    
 }

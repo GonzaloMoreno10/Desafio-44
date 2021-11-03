@@ -1,4 +1,3 @@
-
 {{#if products}}
 <br><br>
 {{#if firstLogin}}
@@ -6,46 +5,36 @@
     Bienvenid@ {{user.user}}
 </div>
 {{/if}}
-<div class="container-sm">
-    <a href="/api/productos/new" class="btn btn-primary">Nuevo Producto <i class="fas fa-plus"></i></a>
-</div>
-<br><br>
+
 <div class="container-sm">
     <div class="row" style="margin-bottom: 2px">
         {{#each products}}
-        
+
         <div class="col-md-3" style="margin-bottom: 20px;padding:10px">
             <a href="/api/productos/detail/{{_id}}" style="text-decoration: none; color:black;">
-            <div class="card" name="productTemplate" id="productTemplate" onmouseover="showDetail('{{_id}}')" onmouseleave="hideDetail('{{_id}}')">
-                <div class="card-body" style="text-align: center">
-                    <img style="width: 100%" src="{{image}}">
-                </div>
-                <div class="card-body" name="detail" id="{{_id}}" style="text-align:left;max-height:400px; padding:10px;overflow:hidden;display:none">
-                    <hr>
-                    <h4>$ {{price}}</h4>
-                    <small>{{title}}</small>
-                </div>
-                <div style="padding:5px">
-                    <div class="row">
-                        {{#if user.admin}}
-                        <div class="col-9">
+                <div class="productTemplate" name="productTemplate" id="template{{_id}}"
+                    onmouseover="showDetail('{{_id}}')" onmouseleave="hideDetail('{{_id}}')">               
+                     <div class="imagen">
+                         <img src="{{image}}">
+                     </div>   
                             
-                            <form action="/api/productos/eliminar/{{_id}}" ?_method="DELETE" method="POST"
-                                style="text-align: center;text-overflow:ellipsis;">
-                                <input type="hidden" name="_method" value="DELETE">
-                                <button class="btn btn-danger w-100  " type="submit"> <i
-                                        class="fas fa-trash"></i></button>
-                            </form>
+                    <div class="detail" name="detail" id="{{_id}}"
+                        style="text-align:left;max-height:400px; padding:10px;overflow:hidden;display:none">
+                        <hr>
+                        <h4>$ {{price}}</h4>
+                        <small>{{title}}</small>
+                        <div class="row" style="margin-top:50px">
+                            <div class="col">
+                                <form action="/api/productos/eliminar/{{_id}}" ?_method="DELETE" method="POST"
+                                    style="text-align: center;text-overflow:ellipsis;">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button class="btn btn-danger w-100  " type="submit"> <i
+                                            class="fas fa-trash"></i></button>
+                                </form>
+                            </div>
                         </div>
-                        <div class="col">
-                            <a class="btn btn-primary w-100 " href="/api/productos/editar/{{_id}}"><i
-                                    class="fas fa-edit"></i></a>
-                        </div>
-                        {{/if}}
                     </div>
-
                 </div>
-            </div>
             </a>
             <!--<br>-->
         </div>
