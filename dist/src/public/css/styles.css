@@ -1,0 +1,8 @@
+#imagen{
+    background-color: green;
+};
+
+
+#productTemplate:active{
+    background-color: red;
+}

@@ -1,3 +1,34 @@
-body{
-    background-color: green;
-};
+#nav{
+    background-color: #FFF159
+}
+
+#productTemplate:hover{
+    height: 420px;
+    box-shadow: 5px 5px 5px gray;
+    transition: 50ms;
+
+}
+
+#productTemplate{
+    height:400px
+}
+
+@media only screen and (max-width: 640px) {
+
+    #text{
+        box-sizing: border-box;
+    }
+    #itemsNav{
+        display: none;
+    }
+    #dropdown{
+        width: 100%;
+    }
+    
+    #imagen{
+        max-width: 100%;
+    }
+    
+     
+    
+}
