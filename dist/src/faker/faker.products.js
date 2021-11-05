@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.products = void 0;
+exports.productosFake = void 0;
 
 var _faker = _interopRequireDefault(require("faker"));
 
@@ -13,20 +13,22 @@ var between = (min, max) => {
   return Math.floor(Math.random() * (max - min) + min);
 };
 
-var products = cant => {
-  var productos = [];
+var productosFake = cant => {
+  var products = [];
+  console.log(cant);
 
   for (var i = 0; i < cant; i++) {
     var prod = {
+      _id: i + 1,
       title: _faker.default.commerce.productName(),
       price: _faker.default.commerce.price(),
-      thumbnail: _faker.default.image.image()
-    }; //console.log(prod);
-
-    productos.push(prod);
+      description: _faker.default.commerce.productName(),
+      image: _faker.default.image.avatar()
+    };
+    products.push(prod);
   }
 
-  return productos;
+  return products;
 };
 
-exports.products = products;
+exports.productosFake = productosFake;

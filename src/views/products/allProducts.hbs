@@ -11,7 +11,7 @@
 <br><br>
 <div class="container-sm">
     <div class="row" style="margin-bottom: 2px">
-        {{#each products.docs}}
+        {{#each products}}
         <div class="col-md-3" style="margin-bottom: 20px;padding:10px">
             <div class="card" style="bg-image hover-zoom">
                 <div class="card-body" style="text-align: center;">
@@ -32,7 +32,8 @@
                             </form>
                         </div>
                         <div class="col">
-                            <a class="btn btn-primary w-100 " href="/api/productos/editar/{{_id}}"><i class="fas fa-edit"></i></a>
+                            <a class="btn btn-primary w-100 " href="/api/productos/editar/{{_id}}"><i
+                                    class="fas fa-edit"></i></a>
                         </div>
 
                     </div>

@@ -59,11 +59,15 @@ class ProductoRepository {
 
   getRandomProductos(cant) {
     return _asyncToGenerator(function* () {
+      var products;
+
       if (cant) {
-        return (0, _faker.products)(cant);
+        products = (0, _faker.productosFake)(cant);
       } else {
-        return (0, _faker.products)(10);
+        products = (0, _faker.productosFake)(10);
       }
+
+      return products;
     })();
   }
 

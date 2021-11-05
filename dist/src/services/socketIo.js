@@ -17,6 +17,8 @@ var _mensajes = require("../repository/mensajes.repository");
 
 var _normalizr = require("normalizr");
 
+var _twilio = require("../services/twilio");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -43,6 +45,7 @@ var initIo = /*#__PURE__*/function () {
         var msgSchema = new _normalizr.schema.Array(msg);
         socket.on('mensajes', /*#__PURE__*/function () {
           var _ref3 = _asyncToGenerator(function* (data) {
+            var admin = 0;
             console.log('Me llego un Mensaje y lo voy a guardar');
             var mensaje = new _Mensaje.default();
             mensaje.author.id = data.author.email;
@@ -55,6 +58,20 @@ var initIo = /*#__PURE__*/function () {
             mensaje.fecha = data.fecha;
 
             if (mensaje) {
+              var frase = mensaje.texto.split(' ');
+
+              for (var i in frase) {
+                if (frase[i] === '@administrador') {
+                  admin = 1;
+                }
+              }
+
+              if (admin == 1) {
+                var response = yield _twilio.SmsService.sendMessage('+543548574529', "El usuario ".concat(mensaje.author.nombre, " ").concat(mensaje.author.apellido, " solicito al administrador.\n             ").concat(mensaje.texto));
+                admin = 0;
+                console.log(response);
+              }
+
               yield _mensajes.mensajes.createMensaje(mensaje);
             }
 

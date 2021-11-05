@@ -11,6 +11,10 @@ var _passportFacebook = _interopRequireDefault(require("passport-facebook"));
 
 var _venv = require("../config/venv");
 
+var _ethereal = require("../services/ethereal");
+
+var _gmail = require("./gmail");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -33,7 +37,31 @@ var strategyOptionsHeroku = {
 
 var loginFunc = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator(function* (accessToken, refreshToken, profile, done) {
-    console.log('SALIO TODO BIEN');
+    var mailOptions = {
+      dest: _venv.ETHEREAL_EMAIL,
+      subject: "Log in ".concat(profile.displayName, "\n    al dia y hora ").concat(new Date()),
+      content: "<p>Usuario logueado ".concat(profile.displayName, "\n    al dia y hora ").concat(new Date(), "</p>")
+    };
+
+    try {
+      var response = yield _ethereal.EtherealService.sendEmail(mailOptions.dest, mailOptions.subject, mailOptions.content);
+    } catch (err) {
+      console.log(err);
+    } //Gmail
+
+
+    var gmailOptions = {
+      dest: profile._json.email,
+      subject: "Ecommerce",
+      content: "<p>Te logueaste a traves de perfil de facebook ".concat(profile.displayName, "   a Ecommerce <br> <img src=\"").concat(profile._json.picture.data.url, "\"/>\">\n    </p>")
+    };
+
+    try {
+      var _response = yield _gmail.GmailService.sendEmail(gmailOptions.dest, gmailOptions.subject, gmailOptions.content);
+    } catch (err) {
+      console.log(err);
+    }
+
     return done(null, profile);
   });
 
@@ -52,12 +80,18 @@ _passport.default.deserializeUser(function (obj, cb) {
   cb(null, obj);
 });
 
-var isLoggedIn = (req, res, done) => {
-  if (!req.isAuthenticated()) return res.status(401).json({
-    msg: 'Unathorized'
+var isLoggedIn = /*#__PURE__*/function () {
+  var _ref2 = _asyncToGenerator(function* (req, res, done) {
+    if (!req.isAuthenticated()) return res.status(401).json({
+      msg: 'Unathorized'
+    });
+    done();
   });
-  done();
-};
+
+  return function isLoggedIn(_x5, _x6, _x7) {
+    return _ref2.apply(this, arguments);
+  };
+}();
 
 exports.isLoggedIn = isLoggedIn;
 var _default = _passport.default;

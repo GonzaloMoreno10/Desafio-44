@@ -13,9 +13,11 @@ var _productos2 = require("../repository/productos.repository");
 
 var _autenticacion = require("../middlewares/autenticacion");
 
-var _users = require("../repository/users.repository");
-
 var _methodOverride = _interopRequireDefault(require("method-override"));
+
+var _ethereal = require("../services/ethereal");
+
+var _venv = require("../config/venv");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -35,14 +37,14 @@ Router.use((0, _methodOverride.default)(function (req, res) {
     return method;
   }
 }));
-Router.get("/listar", _productos.productoController.getProductPagination);
-Router.get("/listar/:id", _autenticacion.auth, _productos.productoController.getProductosByid);
-Router.get("/vista", _autenticacion.auth, /*#__PURE__*/function () {
+Router.get('/listar', _productos.productoController.getProductPagination);
+Router.get('/listar/:id', _autenticacion.auth, _productos.productoController.getProductosByid);
+Router.get('/vista', _autenticacion.auth, /*#__PURE__*/function () {
   var _ref = _asyncToGenerator(function* (req, res) {
     var products = yield _productos2.productosRepository.getAllproductos();
-    console.log(products);
     var firstLogin = req.user.firstLogin;
-    res.render("products/allProducts", {
+    console.log(products);
+    res.render('products/allProducts', {
       products,
       firstLogin
     });
@@ -52,27 +54,28 @@ Router.get("/vista", _autenticacion.auth, /*#__PURE__*/function () {
     return _ref.apply(this, arguments);
   };
 }());
-Router.get("/detail/:id", _autenticacion.auth, /*#__PURE__*/function () {
+Router.get('/detail/:id', _autenticacion.auth, /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator(function* (req, res) {
     var {
       id
     } = req.params;
     var prod = yield _productos2.productosRepository.getProductosById(id);
     console.log(prod);
-    res.render("products/detail", prod);
+    res.render('products/detail', prod);
   });
 
   return function (_x3, _x4) {
     return _ref2.apply(this, arguments);
   };
 }());
-Router.get("/new", _autenticacion.auth, (req, res) => {
-  res.render("products/newProduct");
+Router.get('/new', _autenticacion.auth, (req, res) => {
+  res.render('products/newProduct');
 });
-Router.get("/vista-test/:cant?", _autenticacion.auth, /*#__PURE__*/function () {
+Router.get('/vista-test/:cant?', _autenticacion.auth, /*#__PURE__*/function () {
   var _ref3 = _asyncToGenerator(function* (req, res) {
     var products = yield _productos2.productosRepository.getRandomProductos(req.params.cant);
-    res.render("products/allProducts", {
+    console.log(products);
+    res.render('products/allProducts', {
       products
     });
   });
@@ -94,10 +97,10 @@ Router.get('/editar/:id', /*#__PURE__*/function () {
     return _ref4.apply(this, arguments);
   };
 }());
-Router.post("/crear", _autenticacion.auth, _productos.productoController.createProductos);
-Router.delete("/eliminar/:id", _autenticacion.auth, _productos.productoController.deleteProductos);
-Router.put("/actualizar/:id", _autenticacion.auth, _productos.productoController.updateProductos);
-Router.get("/sala-products", _autenticacion.auth, /*#__PURE__*/function () {
+Router.post('/crear', _autenticacion.auth, _productos.productoController.createProductos);
+Router.delete('/eliminar/:id', _autenticacion.auth, _productos.productoController.deleteProductos);
+Router.put('/actualizar/:id', _autenticacion.auth, _productos.productoController.updateProductos);
+Router.get('/sala-products', _autenticacion.auth, /*#__PURE__*/function () {
   var _ref5 = _asyncToGenerator(function* (req, res) {
     var products = yield _productos2.productosRepository.getAllproductos();
     res.render('products/sala', {

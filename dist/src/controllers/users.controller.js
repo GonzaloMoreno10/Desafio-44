@@ -11,6 +11,10 @@ var _User = _interopRequireDefault(require("../models/User"));
 
 var _passport = _interopRequireDefault(require("passport"));
 
+var _ethereal = require("../services/ethereal");
+
+var _venv = require("../config/venv");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -20,26 +24,28 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 class UsersController {
   login(req, res, next) {
     return _asyncToGenerator(function* () {
-      yield _passport.default.authenticate('login', function (err, user, info) {
-        if (err) {
-          return next(err);
-        }
-
-        if (!user) {
-          var message = info.message;
-          return res.render('errors/login', {
-            message
-          });
-        }
-
-        req.logIn(user, function (err) {
+      yield _passport.default.authenticate('login', /*#__PURE__*/function () {
+        var _ref = _asyncToGenerator(function* (err, user, info) {
           if (err) {
             return next(err);
           }
 
-          return res.redirect('/api/productos/vista');
+          if (!user) {
+            var message = info.message;
+            return res.render('errors/login', {
+              message
+            });
+          }
+
+          req.logIn(user, function (err) {
+            if (err) return next(err);
+          });
         });
-      })(req, res, next);
+
+        return function (_x, _x2, _x3) {
+          return _ref.apply(this, arguments);
+        };
+      }())(req, res, next);
     })();
   }
 
@@ -69,8 +75,10 @@ class UsersController {
   }
 
   logout(req, res) {
-    req.logout();
-    res.redirect("/api/users/logout");
+    return _asyncToGenerator(function* () {
+      req.logout();
+      res.redirect('/api/users/logout');
+    })();
   }
 
 }
