@@ -6,7 +6,7 @@
   "scripts": {
     "build": "babel src -d dist/src",
     "example": "npm run build && node dist/src/index.js",
-    "start": "npm run build  && node dist/src/index.js --cluster",
+    "start": "node dist/src/index.js",
     "start:fork": "node dist/src/index.js --puerto=8081",
     "start:cluster": "node dist/src/index.js --puerto=8082 --cluster",
     "start:inspect": "node --inspect dist/src/index.js",

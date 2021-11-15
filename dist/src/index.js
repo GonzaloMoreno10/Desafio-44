@@ -19,7 +19,7 @@ var _socketIo = require("./services/socketIo.js");
 
 var _express = _interopRequireDefault(require("express"));
 
-var _main = _interopRequireDefault(require("./routes/main"));
+var _main = _interopRequireDefault(require("./rutas/main"));
 
 var _cookieParser = _interopRequireDefault(require("cookie-parser"));
 
@@ -63,7 +63,7 @@ require('./services/mongo');
 require('./services/passport.local');
 
 app.set('port', process.env.PORT || 8080);
-app.set('views', path.resolve(__dirname, 'views'));
+app.set('views', path.resolve(__dirname, '../../src/pages'));
 app.engine('.hbs', (0, _expressHandlebars.default)({
   //Configuro handlebars
   defaultLayout: 'main',
@@ -97,10 +97,10 @@ app.use((req, res, next) => {
 
   res.locals.success_msg = req.flash('success_msg');
   res.locals.error_msg = req.flash('error_msg');
-  res.locals.error = req.flash("error");
+  res.locals.error = req.flash('error');
   next();
 });
-app.use("/api", _main.default);
+app.use('/api', _main.default);
 /*app.use('/',(req,res)=>{
   res.redirect('/api/users/login')
 })*/
