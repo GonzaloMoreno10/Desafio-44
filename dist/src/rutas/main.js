@@ -13,7 +13,7 @@ var _users = _interopRequireDefault(require("./users.routes"));
 
 var _carrito = _interopRequireDefault(require("./carrito.route"));
 
-var _processInfo = _interopRequireDefault(require("../process/processInfo"));
+var _processInfo = _interopRequireDefault(require("../others/process/processInfo"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

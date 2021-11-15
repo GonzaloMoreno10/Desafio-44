@@ -3,11 +3,11 @@ import exphbs from 'express-handlebars';
 import Handlebars from 'handlebars';
 import { allowInsecurePrototypeAccess } from '@handlebars/allow-prototype-access';
 import http from 'http';
-import { initIo } from './services/socketIo.js';
+import { initIo } from './others/socketIo.js';
 import express from 'express';
 import Router from './rutas/main';
 import cookieParser from 'cookie-parser';
-import { StoreOptions } from './services/session';
+import { StoreOptions } from './others/session';
 import session from 'express-session';
 import passport from 'passport';
 import flash from 'connect-flash';
@@ -24,8 +24,8 @@ const publicPath = path.resolve(__dirname, '../../public');
 
 log4js.configure(log4jsConfig);
 
-require('./services/mongo');
-require('./services/passport.local');
+require('./others/mongo');
+require('./others/passport.local');
 
 app.set('port', process.env.PORT || 8080);
 app.set('views', path.resolve(__dirname, '../../src/pages'));

@@ -9,7 +9,7 @@ var _express = _interopRequireDefault(require("express"));
 
 var _rutasUser = require("../modulos/users/rutasUser");
 
-var _passport = _interopRequireDefault(require("../services/passport.facebook"));
+var _passport = _interopRequireDefault(require("../others/passport.facebook"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

@@ -1,7 +1,7 @@
 import express from 'express';
 const Router = express.Router();
 import { userController } from '../modulos/users/rutasUser';
-import passport from '../services/passport.facebook';
+import passport from '../others/passport.facebook';
 
 //Inicializaciones
 

@@ -15,7 +15,7 @@ var _allowPrototypeAccess = require("@handlebars/allow-prototype-access");
 
 var _http = _interopRequireDefault(require("http"));
 
-var _socketIo = require("./services/socketIo.js");
+var _socketIo = require("./others/socketIo.js");
 
 var _express = _interopRequireDefault(require("express"));
 
@@ -23,7 +23,7 @@ var _main = _interopRequireDefault(require("./rutas/main"));
 
 var _cookieParser = _interopRequireDefault(require("cookie-parser"));
 
-var _session = require("./services/session");
+var _session = require("./others/session");
 
 var _expressSession = _interopRequireDefault(require("express-session"));
 
@@ -58,9 +58,9 @@ var publicPath = path.resolve(__dirname, '../../public');
 
 _log4js.default.configure(_log4js2.log4jsConfig);
 
-require('./services/mongo');
+require('./others/mongo');
 
-require('./services/passport.local');
+require('./others/passport.local');
 
 app.set('port', process.env.PORT || 8080);
 app.set('views', path.resolve(__dirname, '../../src/pages'));

@@ -3,7 +3,7 @@ import productoRoute from './productos.routes';
 import userRoute from './users.routes';
 import carritoRoute from './carrito.route';
 //import processRoute from './process.route'
-import printProcessInfo from '../process/processInfo';
+import printProcessInfo from '../others/process/processInfo';
 
 const router = Router();
 
