@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+import { composeWithMongoose } from 'graphql-compose-mongoose';
 const { Schema } = mongoose;
 
 const ProductSchema = new Schema({
@@ -11,4 +12,5 @@ const ProductSchema = new Schema({
   image: { type: String },
 });
 
-module.exports = mongoose.model('productos', ProductSchema);
+export const ProductoModel = mongoose.model('productos', ProductSchema);
+export const ProductTC = composeWithMongoose(ProductoModel);

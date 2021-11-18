@@ -16,9 +16,8 @@ import os from 'os';
 import cluster from 'cluster';
 import log4js from 'log4js';
 import { log4jsConfig } from './config/log4js';
-const warnError = log4js.getLogger();
+
 const consoleLogger = log4js.getLogger('consoleLogger');
-const errorLogger = log4js.getLogger('errorLogger');
 const app = express();
 const publicPath = path.resolve(__dirname, '../../public');
 

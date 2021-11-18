@@ -7,6 +7,8 @@ exports.productoController = void 0;
 
 var _serviciosProductos = _interopRequireDefault(require("./serviciosProductos"));
 
+var _graphqlProducts = require("./graphqlProducts");
+
 var _dalProductos = require("./dalProductos");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -18,7 +20,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 class ProductosController {
   getAllproductos(req, res) {
     return _asyncToGenerator(function* () {
-      var items = yield _dalProductos.productosRepository.getAllproductos();
+      var items = _graphqlProducts.ProductQuery.productsMany();
+
       console.log(items);
       res.json({
         data: items

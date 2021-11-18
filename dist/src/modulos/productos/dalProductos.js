@@ -5,9 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.productosRepository = void 0;
 
-var _serviciosProductos = _interopRequireDefault(require("./serviciosProductos"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _serviciosProductos = require("./serviciosProductos");
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
@@ -16,32 +14,32 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 class ProductoRepository {
   getAllproductos() {
     return _asyncToGenerator(function* () {
-      var prod = yield _serviciosProductos.default.find();
+      var prod = yield _serviciosProductos.ProductoModel.find();
       return prod;
     })();
   }
 
   getProductosById(id) {
     return _asyncToGenerator(function* () {
-      return yield _serviciosProductos.default.findById(id, {}).lean();
+      return yield _serviciosProductos.ProductoModel.findById(id, {}).lean();
     })();
   }
 
   createProducto(producto) {
     return _asyncToGenerator(function* () {
-      return yield producto.save();
+      return yield _serviciosProductos.ProductoModel.save();
     })();
   }
 
   update(id, producto) {
     return _asyncToGenerator(function* () {
-      return yield _serviciosProductos.default.findByIdAndUpdate(id, producto);
+      return yield _serviciosProductos.ProductoModel.findByIdAndUpdate(id, producto);
     })();
   }
 
   delete(id) {
     return _asyncToGenerator(function* () {
-      return yield _serviciosProductos.default.findByIdAndDelete(id);
+      return yield _serviciosProductos.ProductoModel.findByIdAndDelete(id);
     })();
   }
 

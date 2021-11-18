@@ -4,8 +4,19 @@ import userRoute from './users.routes';
 import carritoRoute from './carrito.route';
 //import processRoute from './process.route'
 import printProcessInfo from '../others/process/processInfo';
+import { buildSchema } from 'graphql';
+import { graphqlHTTP } from 'express-graphql';
+import { graphQLMainSchema } from '../modulos/productos/graphqlProducts';
 
 const router = Router();
+
+router.use(
+  '/graphql',
+  graphqlHTTP({
+    schema: graphQLMainSchema,
+    graphiql: true,
+  }),
+);
 
 router.use('/productos', productoRoute);
 

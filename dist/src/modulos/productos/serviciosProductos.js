@@ -1,5 +1,12 @@
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ProductTC = exports.ProductoModel = void 0;
+
+var _graphqlComposeMongoose = require("graphql-compose-mongoose");
+
 var mongoose = require('mongoose');
 
 var {
@@ -31,4 +38,7 @@ var ProductSchema = new Schema({
     type: String
   }
 });
-module.exports = mongoose.model('productos', ProductSchema);
+var ProductoModel = mongoose.model('productos', ProductSchema);
+exports.ProductoModel = ProductoModel;
+var ProductTC = (0, _graphqlComposeMongoose.composeWithMongoose)(ProductoModel);
+exports.ProductTC = ProductTC;

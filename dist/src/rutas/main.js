@@ -15,10 +15,20 @@ var _carrito = _interopRequireDefault(require("./carrito.route"));
 
 var _processInfo = _interopRequireDefault(require("../others/process/processInfo"));
 
+var _graphql = require("graphql");
+
+var _expressGraphql = require("express-graphql");
+
+var _graphqlProducts = require("../modulos/productos/graphqlProducts");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 //import processRoute from './process.route'
 var router = (0, _express.Router)();
+router.use('/graphql', (0, _expressGraphql.graphqlHTTP)({
+  schema: _graphqlProducts.graphQLMainSchema,
+  graphiql: true
+}));
 router.use('/productos', _productos.default);
 router.use('/users', _users.default);
 router.use('/carrito', _carrito.default);

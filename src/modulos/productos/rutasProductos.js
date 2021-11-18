@@ -1,9 +1,10 @@
 import Producto from './serviciosProductos';
+import { ProductQuery } from './graphqlProducts';
 import { productosRepository } from './dalProductos';
 
 class ProductosController {
   async getAllproductos(req, res) {
-    const items = await productosRepository.getAllproductos();
+    const items = ProductQuery.productsMany();
     console.log(items);
     res.json({
       data: items,
