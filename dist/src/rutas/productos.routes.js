@@ -27,16 +27,16 @@ Router.use((0, _methodOverride.default)(function (req, res) {
     return method;
   }
 }));
-Router.get('/listar', _rutasUser.userController.auth, _rutasProductos.productoController.getAllproductos); //Router.get('/listar/:id', auth, productoController.getProductosByid);
+Router.get('/listar/:id?', _rutasProductos.productoController.getAllproductos); //Router.get('/listar/:id', auth, productoController.getProductosByid);
 
 Router.get('/vista', _rutasProductos.productoController.getVista);
 Router.get('/detail/:id', _rutasUser.userController.auth, _rutasProductos.productoController.getDetail);
 Router.get('/new', _rutasUser.userController.auth, _rutasProductos.productoController.getNew);
 Router.get('/vista-test/:cant?', _rutasUser.userController.auth, _rutasProductos.productoController.vistaTest);
 Router.get('/editar/:id', _rutasProductos.productoController.getEditarId);
-Router.post('/crear', _rutasUser.userController.auth, _rutasProductos.productoController.createProductos);
-Router.delete('/eliminar/:id', _rutasUser.userController.auth, _rutasProductos.productoController.deleteProductos);
-Router.put('/actualizar/:id', _rutasUser.userController.auth, _rutasProductos.productoController.updateProductos);
+Router.post('/crear', _rutasProductos.productoController.createProductos);
+Router.delete('/eliminar/:id', _rutasProductos.productoController.deleteProductos);
+Router.put('/actualizar/:id', _rutasProductos.productoController.updateProductos);
 Router.get('/sala-products', _rutasProductos.productoController.getSala);
 var _default = Router;
 exports.default = _default;

@@ -21,6 +21,8 @@ var _expressGraphql = require("express-graphql");
 
 var _graphqlProducts = require("../modulos/productos/graphqlProducts");
 
+var _axios = _interopRequireDefault(require("./axios"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 //import processRoute from './process.route'
@@ -29,6 +31,7 @@ router.use('/graphql', (0, _expressGraphql.graphqlHTTP)({
   schema: _graphqlProducts.graphQLMainSchema,
   graphiql: true
 }));
+router.use('/axios', _axios.default);
 router.use('/productos', _productos.default);
 router.use('/users', _users.default);
 router.use('/carrito', _carrito.default);

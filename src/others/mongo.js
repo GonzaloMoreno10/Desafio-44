@@ -5,5 +5,5 @@ export const con = mongoose
   )
   .then(db => {})
   .catch(err => {
-    console.error(err);
+    return new Error(err);
   });

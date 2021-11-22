@@ -15,6 +15,7 @@ class ProductoRepository {
   getAllproductos() {
     return _asyncToGenerator(function* () {
       var prod = yield _serviciosProductos.ProductoModel.find();
+      console.log(prod);
       return prod;
     })();
   }
@@ -27,7 +28,7 @@ class ProductoRepository {
 
   createProducto(producto) {
     return _asyncToGenerator(function* () {
-      return yield _serviciosProductos.ProductoModel.save();
+      return yield _serviciosProductos.ProductoModel.create(producto);
     })();
   }
 

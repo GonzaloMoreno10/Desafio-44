@@ -3,6 +3,7 @@ import { ProductoModel } from './serviciosProductos';
 class ProductoRepository {
   async getAllproductos() {
     let prod = await ProductoModel.find();
+    console.log(prod);
     return prod;
   }
 
@@ -11,7 +12,7 @@ class ProductoRepository {
   }
 
   async createProducto(producto) {
-    return await ProductoModel.save();
+    return await ProductoModel.create(producto);
   }
 
   async update(id, producto) {

@@ -17,28 +17,11 @@ var {
   SchemaComposer
 } = require('graphql-compose');
 
-var miFunc = () => {
-  return false;
-};
-
 var ProductsQuery = {
-  productById: _serviciosProductos.ProductTC.getResolver('findById'),
-  productByIds: _serviciosProductos.ProductTC.getResolver('findByIds'),
-  productOne: _serviciosProductos.ProductTC.getResolver('findOne'),
-  productMany: _serviciosProductos.ProductTC.getResolver('findMany'),
-  productCount: _serviciosProductos.ProductTC.getResolver('count'),
-  productConnection: _serviciosProductos.ProductTC.getResolver('connection'),
-  productPagination: _serviciosProductos.ProductTC.getResolver('pagination')
+  productMany: _serviciosProductos.ProductTC.getResolver('findMany')
 };
 var ProductsMutation = {
-  productCreateOne: _serviciosProductos.ProductTC.getResolver('createOne'),
-  productCreateMany: _serviciosProductos.ProductTC.getResolver('createMany'),
-  productUpdateById: _serviciosProductos.ProductTC.getResolver('updateById'),
-  productUpdateOne: _serviciosProductos.ProductTC.getResolver('updateOne'),
-  productUpdateMany: _serviciosProductos.ProductTC.getResolver('updateMany'),
-  productRemoveById: _serviciosProductos.ProductTC.getResolver('removeById'),
-  productRemoveOne: _serviciosProductos.ProductTC.getResolver('removeOne'),
-  productRemoveMany: _serviciosProductos.ProductTC.getResolver('removeMany')
+  productCreateOne: _serviciosProductos.ProductTC.getResolver('createOne')
 };
 var schemaComposer = new SchemaComposer();
 schemaComposer.Query.addFields(_objectSpread({}, ProductsQuery));

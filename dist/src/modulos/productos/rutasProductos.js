@@ -5,13 +5,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.productoController = void 0;
 
-var _serviciosProductos = _interopRequireDefault(require("./serviciosProductos"));
-
-var _graphqlProducts = require("./graphqlProducts");
+var _serviciosProductos = require("./serviciosProductos");
 
 var _dalProductos = require("./dalProductos");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
@@ -20,12 +16,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 class ProductosController {
   getAllproductos(req, res) {
     return _asyncToGenerator(function* () {
-      var items = _graphqlProducts.ProductQuery.productsMany();
+      var {
+        id
+      } = req.params;
 
-      console.log(items);
-      res.json({
-        data: items
-      });
+      if (id) {
+        var producto = yield _dalProductos.productosRepository.getProductosById(id);
+        return res.status(201).json(producto);
+      }
+
+      var items = yield _dalProductos.productosRepository.getAllproductos();
+      return res.status(201).json(items);
     })();
   }
 
@@ -112,8 +113,13 @@ class ProductosController {
         stock,
         code
       } = req.body;
+
+      if (!title && !code) {
+        return res.status(500).json('invalid Body');
+      }
+
       var date = new Date();
-      var producto = new _serviciosProductos.default({
+      var producto = new _serviciosProductos.ProductoModel({
         title,
         price,
         date,
@@ -122,11 +128,15 @@ class ProductosController {
         description,
         image
       });
-      console.log(producto);
-      var id = yield _dalProductos.productosRepository.createProducto(producto);
-      var newItem = yield _dalProductos.productosRepository.getAllproductos(id);
-      req.flash('success_msg', 'Producto creado correctamente');
-      res.redirect('/api/productos/vista');
+      var result = yield _dalProductos.productosRepository.createProducto(producto);
+      /*req.flash('success_msg', 'Producto creado correctamente');
+      res.redirect('/api/productos/vista');*/
+
+      return res.status(200).json({
+        result: 'Producto creado',
+        ruta: "http://localhost:8080/api/productos/listar/".concat(result._id),
+        id: result._id
+      });
     })();
   }
 
@@ -146,7 +156,7 @@ class ProductosController {
       console.log(id);
 
       if (!title || !price || !stock || !code || !description || !image) {
-        return res.status(400).json({
+        return res.status(500).json({
           msg: 'Invalid body'
         });
       }
@@ -169,8 +179,10 @@ class ProductosController {
       };
       yield _dalProductos.productosRepository.update(id, prod);
       var item = yield _dalProductos.productosRepository.getProductosById(id);
-      req.flash('success_msg', 'Producto actualizado correctamente');
-      return res.redirect('/api/productos/vista');
+      /*req.flash('success_msg', 'Producto actualizado correctamente');
+      return res.redirect('/api/productos/vista');*/
+
+      return res.status(200).json('Producto actualizado');
     })();
   }
 
@@ -179,16 +191,18 @@ class ProductosController {
       var {
         id
       } = req.params;
-      console.log(id);
-      var producto = yield _dalProductos.productosRepository.delete(id);
+      var exist = yield _dalProductos.productosRepository.getProductosById(id);
 
-      if (!producto) {
-        return res.redirect('/api/productos/vista');
+      if (!exist) {
+        return res.json('producto no existente');
       }
 
       yield _dalProductos.productosRepository.delete(id);
-      req.flash('success_msg', 'Producto Eliminado correctamente');
-      res.redirect('/api/productos/vista');
+      yield _dalProductos.productosRepository.delete(id);
+      /*req.flash('success_msg', 'Producto Eliminado correctamente');
+      res.redirect('/api/productos/vista');*/
+
+      return res.status(200).json('producto eliminado');
     })();
   }
 

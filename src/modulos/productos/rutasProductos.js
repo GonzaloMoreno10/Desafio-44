@@ -1,14 +1,15 @@
-import Producto from './serviciosProductos';
-import { ProductQuery } from './graphqlProducts';
+import { ProductoModel } from './serviciosProductos';
 import { productosRepository } from './dalProductos';
 
 class ProductosController {
   async getAllproductos(req, res) {
-    const items = ProductQuery.productsMany();
-    console.log(items);
-    res.json({
-      data: items,
-    });
+    let { id } = req.params;
+    if (id) {
+      const producto = await productosRepository.getProductosById(id);
+      return res.status(201).json(producto);
+    }
+    const items = await productosRepository.getAllproductos();
+    return res.status(201).json(items);
   }
 
   async vistaTest(req, res) {
@@ -63,8 +64,11 @@ class ProductosController {
 
   async createProductos(req, res) {
     const { title, price, description, image, stock, code } = req.body;
+    if (!title && !code) {
+      return res.status(500).json('invalid Body');
+    }
     let date = new Date();
-    const producto = new Producto({
+    const producto = new ProductoModel({
       title,
       price,
       date,
@@ -74,12 +78,15 @@ class ProductosController {
       image,
     });
 
-    console.log(producto);
-    const id = await productosRepository.createProducto(producto);
+    const result = await productosRepository.createProducto(producto);
 
-    const newItem = await productosRepository.getAllproductos(id);
-    req.flash('success_msg', 'Producto creado correctamente');
-    res.redirect('/api/productos/vista');
+    /*req.flash('success_msg', 'Producto creado correctamente');
+    res.redirect('/api/productos/vista');*/
+    return res.status(200).json({
+      result: 'Producto creado',
+      ruta: `http://localhost:8080/api/productos/listar/${result._id}`,
+      id: result._id,
+    });
   }
 
   async updateProductos(req, res) {
@@ -88,7 +95,7 @@ class ProductosController {
     const { id } = req.params;
     console.log(id);
     if (!title || !price || !stock || !code || !description || !image) {
-      return res.status(400).json({ msg: 'Invalid body' });
+      return res.status(500).json({ msg: 'Invalid body' });
     }
 
     const productoOriginal = await productosRepository.getProductosById(id);
@@ -105,23 +112,26 @@ class ProductosController {
     await productosRepository.update(id, prod);
 
     const item = await productosRepository.getProductosById(id);
-    req.flash('success_msg', 'Producto actualizado correctamente');
-    return res.redirect('/api/productos/vista');
+    /*req.flash('success_msg', 'Producto actualizado correctamente');
+    return res.redirect('/api/productos/vista');*/
+
+    return res.status(200).json('Producto actualizado');
   }
 
   async deleteProductos(req, res) {
     const { id } = req.params;
 
-    console.log(id);
-    const producto = await productosRepository.delete(id);
+    const exist = await productosRepository.getProductosById(id);
 
-    if (!producto) {
-      return res.redirect('/api/productos/vista');
+    if (!exist) {
+      return res.json('producto no existente');
     }
+    await productosRepository.delete(id);
 
     await productosRepository.delete(id);
-    req.flash('success_msg', 'Producto Eliminado correctamente');
-    res.redirect('/api/productos/vista');
+    /*req.flash('success_msg', 'Producto Eliminado correctamente');
+    res.redirect('/api/productos/vista');*/
+    return res.status(200).json('producto eliminado');
   }
 }
 

@@ -7,6 +7,7 @@ import printProcessInfo from '../others/process/processInfo';
 import { buildSchema } from 'graphql';
 import { graphqlHTTP } from 'express-graphql';
 import { graphQLMainSchema } from '../modulos/productos/graphqlProducts';
+import axiosRoute from './axios';
 
 const router = Router();
 
@@ -17,6 +18,8 @@ router.use(
     graphiql: true,
   }),
 );
+
+router.use('/axios', axiosRoute);
 
 router.use('/productos', productoRoute);
 

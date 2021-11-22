@@ -18,7 +18,7 @@ Router.use(
   }),
 );
 
-Router.get('/listar', userController.auth, productoController.getAllproductos);
+Router.get('/listar/:id?', productoController.getAllproductos);
 
 //Router.get('/listar/:id', auth, productoController.getProductosByid);
 
@@ -36,19 +36,11 @@ Router.get(
 
 Router.get('/editar/:id', productoController.getEditarId);
 
-Router.post('/crear', userController.auth, productoController.createProductos);
+Router.post('/crear', productoController.createProductos);
 
-Router.delete(
-  '/eliminar/:id',
-  userController.auth,
-  productoController.deleteProductos,
-);
+Router.delete('/eliminar/:id', productoController.deleteProductos);
 
-Router.put(
-  '/actualizar/:id',
-  userController.auth,
-  productoController.updateProductos,
-);
+Router.put('/actualizar/:id', productoController.updateProductos);
 
 Router.get('/sala-products', productoController.getSala);
 
