@@ -5,7 +5,7 @@ import { allowInsecurePrototypeAccess } from '@handlebars/allow-prototype-access
 import http from 'http';
 import { initIo } from './others/socketIo.js';
 import express from 'express';
-import Router from './rutas/main';
+import { mainRouter } from './routes';
 import cookieParser from 'cookie-parser';
 import { StoreOptions } from './others/session';
 import session from 'express-session';
@@ -23,11 +23,10 @@ const publicPath = path.resolve(__dirname, '../../public');
 
 log4js.configure(log4jsConfig);
 
-require('./others/mongo');
 require('./others/passport.local');
 
 app.set('port', process.env.PORT || 8080);
-app.set('views', path.resolve(__dirname, '../../src/pages'));
+app.set('views', path.resolve(__dirname, '../../src/views'));
 
 app.engine(
   '.hbs',
@@ -70,7 +69,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/api', Router);
+app.use('/api', mainRouter);
 
 /*app.use('/',(req,res)=>{
   res.redirect('/api/users/login')

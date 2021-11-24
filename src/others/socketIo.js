@@ -1,13 +1,12 @@
 import { Server } from 'socket.io';
-import Producto from '../modulos/productos/serviciosProductos';
-import Mensaje from '../modulos/mensajes/serviciosMensaje';
-import { productosRepository } from '../modulos/productos/dalProductos';
-import { mensajes as mensajeRepo } from '../modulos/mensajes/dalMensaje';
+import Producto from '../services/productos';
+import Mensaje from '../services/mensajes';
+import { daoSelect } from '../config/datasourceSetting';
 import { normalize, schema } from 'normalizr';
 import { SmsService } from './twilio';
 
 export const initIo = async server => {
-  let prods = await productosRepository.getAllproductos();
+  let prods = await daoSelect.getAllProductos();
   // let mensajes = await getMensajes(archMessg);
   const io = new Server(server);
   io.on('connection', async socket => {
@@ -54,10 +53,10 @@ export const initIo = async server => {
           admin = 0;
           console.log(response);
         }
-        await mensajeRepo.createMensaje(mensaje);
+        await daoSelect.createMensaje(mensaje);
       }
 
-      let mensajes = (await mensajeRepo.getAllMensajes()).map(data => ({
+      let mensajes = (await daoSelect.getAllMensajes()).map(data => ({
         _id: data._id,
         author: data.author,
         text: data.texto,
@@ -78,10 +77,10 @@ export const initIo = async server => {
       (produc.stock = data.stock), (produc.description = data.description);
       produc.image = data.image;
       if (produc) {
-        let prod = await productosRepository.createProducto(produc);
+        let prod = await daoSelect.createProducto(produc);
 
         if (prod) {
-          prods = await productosRepository.getAllproductos();
+          prods = await daoSelect.getAllProductos();
           io.emit('productos', prods);
         }
       }
@@ -89,12 +88,12 @@ export const initIo = async server => {
 
     //Emito los mensajes
     socket.on('askProducts', async data => {
-      let prods = await productosRepository.getAllproductos();
+      let prods = await daoSelect.getAllProductos();
       socket.emit('productos', prods);
     });
 
     socket.on('askMensajes', async data => {
-      let mensajes = (await mensajeRepo.getAllMensajes()).map(data => ({
+      let mensajes = (await daoSelect.getAllMensajes()).map(data => ({
         _id: data._id,
         author: data.author,
         text: data.texto,

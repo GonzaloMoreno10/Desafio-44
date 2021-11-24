@@ -4,9 +4,9 @@ var _passport = _interopRequireDefault(require("passport"));
 
 var _passportLocal = _interopRequireDefault(require("passport-local"));
 
-var _serviciosUser = _interopRequireDefault(require("../modulos/users/serviciosUser"));
+var _datasourceSetting = require("../config/datasourceSetting");
 
-var _dalUser = require("../modulos/users/dalUser");
+var _passwordsThreatment = require("../utils/passwordsThreatment");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -23,10 +23,7 @@ var strategyOptions = {
 
 var login = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator(function* (req, userName, password, done) {
-    var user = yield _serviciosUser.default.findOne({
-      user: userName
-    });
-    console.log(user);
+    var user = yield _datasourceSetting.daoSelect.getUserByName(userName);
 
     if (!user) {
       console.log('Usuario no existe');
@@ -35,7 +32,7 @@ var login = /*#__PURE__*/function () {
       });
     }
 
-    if (!(yield user.matchPassword(password))) {
+    if (!(yield (0, _passwordsThreatment.matchPassword)(password, user[0].password))) {
       console.log('Password erronea');
       return done(null, false, {
         message: 'Contraseña incorrecta.'
@@ -43,7 +40,7 @@ var login = /*#__PURE__*/function () {
     }
 
     user.lastLogin = new Date();
-    yield _dalUser.usersRepository.updateUser(user._id, user);
+    yield _datasourceSetting.daoSelect.updateUser(user[0]._id, user);
     return done(null, user);
   });
 
@@ -55,11 +52,11 @@ var login = /*#__PURE__*/function () {
 _passport.default.use('login', new LocalStrategy(strategyOptions, login));
 
 _passport.default.serializeUser((user, done) => {
-  done(null, user._id);
+  done(null, user[0]._id);
 });
 
 _passport.default.deserializeUser((userId, done) => {
-  _serviciosUser.default.findById(userId, function (err, user) {
-    done(err, user);
-  });
+  var user = _datasourceSetting.daoSelect.getUser(userId);
+
+  if (user) done(err, user[0]);
 });

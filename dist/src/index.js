@@ -19,7 +19,7 @@ var _socketIo = require("./others/socketIo.js");
 
 var _express = _interopRequireDefault(require("express"));
 
-var _main = _interopRequireDefault(require("./rutas/main"));
+var _routes = require("./routes");
 
 var _cookieParser = _interopRequireDefault(require("cookie-parser"));
 
@@ -54,12 +54,10 @@ var publicPath = path.resolve(__dirname, '../../public');
 
 _log4js.default.configure(_log4js2.log4jsConfig);
 
-require('./others/mongo');
-
 require('./others/passport.local');
 
 app.set('port', process.env.PORT || 8080);
-app.set('views', path.resolve(__dirname, '../../src/pages'));
+app.set('views', path.resolve(__dirname, '../../src/views'));
 app.engine('.hbs', (0, _expressHandlebars.default)({
   //Configuro handlebars
   defaultLayout: 'main',
@@ -96,7 +94,7 @@ app.use((req, res, next) => {
   res.locals.error = req.flash('error');
   next();
 });
-app.use('/api', _main.default);
+app.use('/api', _routes.mainRouter);
 /*app.use('/',(req,res)=>{
   res.redirect('/api/users/login')
 })*/

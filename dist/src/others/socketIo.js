@@ -7,13 +7,11 @@ exports.initIo = void 0;
 
 var _socket = require("socket.io");
 
-var _serviciosProductos = _interopRequireDefault(require("../modulos/productos/serviciosProductos"));
+var _productos = _interopRequireDefault(require("../services/productos"));
 
-var _serviciosMensaje = _interopRequireDefault(require("../modulos/mensajes/serviciosMensaje"));
+var _mensajes = _interopRequireDefault(require("../services/mensajes"));
 
-var _dalProductos = require("../modulos/productos/dalProductos");
-
-var _dalMensaje = require("../modulos/mensajes/dalMensaje");
+var _datasourceSetting = require("../config/datasourceSetting");
 
 var _normalizr = require("normalizr");
 
@@ -27,7 +25,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var initIo = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator(function* (server) {
-    var prods = yield _dalProductos.productosRepository.getAllproductos(); // let mensajes = await getMensajes(archMessg);
+    var prods = yield _datasourceSetting.daoSelect.getAllProductos(); // let mensajes = await getMensajes(archMessg);
 
     var io = new _socket.Server(server);
     io.on('connection', /*#__PURE__*/function () {
@@ -45,7 +43,7 @@ var initIo = /*#__PURE__*/function () {
           var _ref3 = _asyncToGenerator(function* (data) {
             var admin = 0;
             console.log('Me llego un Mensaje y lo voy a guardar');
-            var mensaje = new _serviciosMensaje.default();
+            var mensaje = new _mensajes.default();
             mensaje.author.id = data.author.email;
             mensaje.author.nombre = data.author.nombre;
             mensaje.author.apellido = data.author.apellido;
@@ -70,10 +68,10 @@ var initIo = /*#__PURE__*/function () {
                 console.log(response);
               }
 
-              yield _dalMensaje.mensajes.createMensaje(mensaje);
+              yield _datasourceSetting.daoSelect.createMensaje(mensaje);
             }
 
-            var mensajes = (yield _dalMensaje.mensajes.getAllMensajes()).map(data => ({
+            var mensajes = (yield _datasourceSetting.daoSelect.getAllMensajes()).map(data => ({
               _id: data._id,
               author: data.author,
               text: data.texto,
@@ -91,7 +89,7 @@ var initIo = /*#__PURE__*/function () {
         }());
         socket.on('productos', /*#__PURE__*/function () {
           var _ref4 = _asyncToGenerator(function* (data) {
-            var produc = new _serviciosProductos.default();
+            var produc = new _productos.default();
             produc.title = data.title;
             produc.price = data.price;
             produc.date = data.date;
@@ -100,10 +98,10 @@ var initIo = /*#__PURE__*/function () {
             produc.image = data.image;
 
             if (produc) {
-              var prod = yield _dalProductos.productosRepository.createProducto(produc);
+              var prod = yield _datasourceSetting.daoSelect.createProducto(produc);
 
               if (prod) {
-                prods = yield _dalProductos.productosRepository.getAllproductos();
+                prods = yield _datasourceSetting.daoSelect.getAllProductos();
                 io.emit('productos', prods);
               }
             }
@@ -116,7 +114,7 @@ var initIo = /*#__PURE__*/function () {
 
         socket.on('askProducts', /*#__PURE__*/function () {
           var _ref5 = _asyncToGenerator(function* (data) {
-            var prods = yield _dalProductos.productosRepository.getAllproductos();
+            var prods = yield _datasourceSetting.daoSelect.getAllProductos();
             socket.emit('productos', prods);
           });
 
@@ -126,7 +124,7 @@ var initIo = /*#__PURE__*/function () {
         }());
         socket.on('askMensajes', /*#__PURE__*/function () {
           var _ref6 = _asyncToGenerator(function* (data) {
-            var mensajes = (yield _dalMensaje.mensajes.getAllMensajes()).map(data => ({
+            var mensajes = (yield _datasourceSetting.daoSelect.getAllMensajes()).map(data => ({
               _id: data._id,
               author: data.author,
               text: data.texto,
