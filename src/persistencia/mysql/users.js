@@ -1,6 +1,6 @@
 import { createConnection } from '../../others/mysql';
 
-export class UserRepository {
+export class UserDao {
   connection;
 
   constructor() {
@@ -42,4 +42,4 @@ export class UserRepository {
   }
 }
 
-export const userRepository = new UserRepository();
+export const userRepository = new UserDao();

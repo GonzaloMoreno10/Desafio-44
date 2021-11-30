@@ -1,6 +1,6 @@
 import { ProductoModel } from '../../services/productos';
 
-class ProductoRepository {
+class ProductoDao {
   async getAllproductos() {
     let prod = await ProductoModel.find();
     return prod;
@@ -23,4 +23,4 @@ class ProductoRepository {
   }
 }
 
-export const productosRepository = new ProductoRepository();
+export const productoDao = new ProductoDao();

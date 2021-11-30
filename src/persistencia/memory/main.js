@@ -1,7 +1,5 @@
 import { productoDao, carritoDao, mensajes, userDao } from './';
-
-require('../../others/mongo');
-export class MongoRepository {
+export class MemoryRepository {
   getAllProductos = async () => {
     return await productoDao.getAllproductos();
   };

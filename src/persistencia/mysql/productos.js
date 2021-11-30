@@ -1,5 +1,5 @@
 import { createConnection } from '../../others/mysql';
-export class ProductoRepository {
+export class ProductoDao {
   createConnection;
 
   async getAllproductos() {
@@ -40,4 +40,4 @@ export class ProductoRepository {
   }
 }
 
-export const productoRepository = new ProductoRepository();
+export const productoRepository = new ProductoDao();

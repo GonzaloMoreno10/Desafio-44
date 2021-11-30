@@ -1,56 +1,51 @@
-import {
-  productoRepository,
-  carritoRepository,
-  mensajeRepository,
-  userRepository,
-} from './';
+import { productoDao, carritoDao, mensajeDao, userDao } from './';
 
 export class MySqlRepository {
   getAllProductos = async () => {
-    return await productoRepository.getAllproductos();
+    return await productoDao.getAllproductos();
   };
 
   getProductosById = async id => {
-    return await productoRepository.getProductosById(id);
+    return await productoDao.getProductosById(id);
   };
 
   createProducto = async producto => {
-    return await productoRepository.createProducto(producto);
+    return await productoDao.createProducto(producto);
   };
 
   updateproducto = async (id, producto) => {
-    return await productoRepository.update(id, producto);
+    return await productoDao.update(id, producto);
   };
 
   deleteProducto = async id => {
-    return await productoRepository.delete(id);
+    return await productoDao.delete(id);
   };
 
   findAllCarrito = async user => {
-    return await carritoRepository.findAll(user);
+    return await carritoDao.findAll(user);
   };
 
   getAllMensajes = async () => {
-    return await mensajeRepository.getAllMensajes();
+    return await mensajeDao.getAllMensajes();
   };
 
   createMensaje = async mensaje => {
-    return await mensajeRepository.createMensaje(mensaje);
+    return await mensajeDao.createMensaje(mensaje);
   };
 
   getUser = async user => {
-    return await userRepository.getUser(user);
+    return await userDao.getUser(user);
   };
 
   getUserByName = async name => {
-    return await userRepository.getUserByName(name);
+    return await userDao.getUserByName(name);
   };
 
   createUser = async user => {
-    return await userRepository.createUser(user);
+    return await userDao.createUser(user);
   };
 
   updateUser = async (id, user) => {
-    return await userRepository.updateUser(id, user);
+    return await userDao.updateUser(id, user);
   };
 }

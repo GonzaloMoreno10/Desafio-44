@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.usersRepository = void 0;
+exports.userDao = void 0;
 
 var _users = _interopRequireDefault(require("../../services/users"));
 
@@ -13,7 +13,7 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-class UsersRepository {
+class UserDao {
   getUser(user) {
     return _asyncToGenerator(function* () {
       var usuario = yield _users.default.findOne({
@@ -47,5 +47,5 @@ class UsersRepository {
 
 }
 
-var usersRepository = new UsersRepository();
-exports.usersRepository = usersRepository;
+var userDao = new UserDao();
+exports.userDao = userDao;

@@ -1,6 +1,6 @@
 import { createConnection } from '../../others/mysql';
 
-class MensajesRepository {
+class Mensaje {
   async getAllMensajes() {
     let connection = await createConnection();
     let data = await connection.query('select * from mensajes');
@@ -22,4 +22,4 @@ class MensajesRepository {
   }
 }
 
-export const mensajeRepository = new MensajesRepository();
+export const mensajeRepository = new Mensaje();

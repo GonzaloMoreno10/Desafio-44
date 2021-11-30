@@ -5,20 +5,23 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.DaoFactory = void 0;
 
-var _main = require("../persistencia/mongo/main");
+var _main = require("../persistencia/memory/main");
 
-var _main2 = require("../persistencia/mysql/main");
+var _main2 = require("../persistencia/mongo/main");
+
+var _main3 = require("../persistencia/mysql/main");
 
 class DaoFactory {
   static get(tipo) {
     switch (tipo) {
       case 1:
-        console.log('RETORNANDO INSTANCIA CLASE MONGODB');
-        return new _main.MongoRepository();
+        return new _main2.MongoRepository();
 
       case 2:
-        console.log('RETORNANDO INSTANCIA MYSQL');
-        return new _main2.MySqlRepository();
+        return new _main3.MySqlRepository();
+
+      case 3:
+        return new _main.MemoryRepository();
 
       default:
         return null;

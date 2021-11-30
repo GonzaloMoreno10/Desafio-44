@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.productoRepository = exports.ProductoRepository = void 0;
+exports.productoRepository = exports.ProductoDao = void 0;
 
 var _mysql = require("../../others/mysql");
 
@@ -13,7 +13,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-class ProductoRepository {
+class ProductoDao {
   constructor() {
     _defineProperty(this, "createConnection", void 0);
   }
@@ -61,6 +61,6 @@ class ProductoRepository {
 
 }
 
-exports.ProductoRepository = ProductoRepository;
-var productoRepository = new ProductoRepository();
+exports.ProductoDao = ProductoDao;
+var productoRepository = new ProductoDao();
 exports.productoRepository = productoRepository;

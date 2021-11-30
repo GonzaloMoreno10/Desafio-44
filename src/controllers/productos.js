@@ -1,5 +1,6 @@
 import { daoSelect } from '../config/datasourceSetting';
 import { ProductoModel } from '../services/productos';
+import minimist from 'minimist';
 class ProductosController {
   async getAllproductos(req, res) {
     let { id } = req.params;
@@ -57,20 +58,40 @@ class ProductosController {
   }
 
   async createProductos(req, res) {
+    const argumentos = minimist(process.argv.slice(2));
+    const tipo = argumentos.tipo_ds;
+    console.log(tipo);
     const { title, price, description, image, stock, code } = req.body;
     if (!title && !code) {
       return res.status(500).json('invalid Body');
     }
-    let date = new Date();
-    const producto = new ProductoModel({
-      title,
-      price,
-      date,
-      stock,
-      code,
-      description,
-      image,
-    });
+    let producto;
+    if (tipo == 3) {
+      const productos = await daoSelect.getAllProductos();
+      console.log(productos);
+      const id = productos.length ? productos.length + 1 : 1;
+      let date = new Date();
+      producto = {
+        title,
+        price,
+        date,
+        stock,
+        code,
+        description,
+        image,
+        id,
+      };
+    } else {
+      producto = new ProductoModel({
+        title,
+        price,
+        date,
+        stock,
+        code,
+        description,
+        image,
+      });
+    }
 
     const result = await daoSelect.createProducto(producto);
 
@@ -94,6 +115,8 @@ class ProductosController {
     }
 
     const productoOriginal = await daoSelect.getProductosById(id);
+
+    console.log(productoOriginal);
 
     //console.log(productoOriginal)
     if (!productoOriginal) {

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.MySqlRepository = void 0;
+exports.MemoryRepository = void 0;
 
 var _ = require("./");
 
@@ -13,7 +13,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-class MySqlRepository {
+class MemoryRepository {
   constructor() {
     _defineProperty(this, "getAllProductos", /*#__PURE__*/_asyncToGenerator(function* () {
       return yield _.productoDao.getAllproductos();
@@ -70,12 +70,12 @@ class MySqlRepository {
     }());
 
     _defineProperty(this, "getAllMensajes", /*#__PURE__*/_asyncToGenerator(function* () {
-      return yield _.mensajeDao.getAllMensajes();
+      return yield _.mensajes.getAllMensajes();
     }));
 
     _defineProperty(this, "createMensaje", /*#__PURE__*/function () {
       var _ref8 = _asyncToGenerator(function* (mensaje) {
-        return yield _.mensajeDao.createMensaje(mensaje);
+        return yield _.mensajes.createMensaje(mensaje);
       });
 
       return function (_x7) {
@@ -105,7 +105,7 @@ class MySqlRepository {
 
     _defineProperty(this, "createUser", /*#__PURE__*/function () {
       var _ref11 = _asyncToGenerator(function* (user) {
-        return yield _.userDao.createUser(user);
+        return yield usersRepository.createUser(user);
       });
 
       return function (_x10) {
@@ -115,7 +115,7 @@ class MySqlRepository {
 
     _defineProperty(this, "updateUser", /*#__PURE__*/function () {
       var _ref12 = _asyncToGenerator(function* (id, user) {
-        return yield _.userDao.updateUser(id, user);
+        return yield usersRepository.updateUser(id, user);
       });
 
       return function (_x11, _x12) {
@@ -126,4 +126,4 @@ class MySqlRepository {
 
 }
 
-exports.MySqlRepository = MySqlRepository;
+exports.MemoryRepository = MemoryRepository;

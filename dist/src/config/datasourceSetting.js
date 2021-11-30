@@ -18,9 +18,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 var argumentos = (0, _minimist.default)(process.argv.slice(2));
-console.log(argumentos);
 var tipo = argumentos.tipo_ds;
-var persistance;
 
 class DaoSelect {
   constructor() {

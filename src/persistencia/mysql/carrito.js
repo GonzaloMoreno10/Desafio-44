@@ -1,6 +1,6 @@
 import { createConnection } from '../../others/mysql';
 
-export class CarritoRepository {
+export class CarritoDao {
   async findAll(userId) {
     let connection = await createConnection();
     let data = await connection.query(
@@ -12,4 +12,4 @@ export class CarritoRepository {
     return data[0];
   }
 }
-export const carritoRepository = new CarritoRepository();
+export const carritoRepository = new CarritoDao();

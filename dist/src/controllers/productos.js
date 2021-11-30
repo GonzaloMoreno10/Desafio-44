@@ -9,6 +9,10 @@ var _datasourceSetting = require("../config/datasourceSetting");
 
 var _productos = require("../services/productos");
 
+var _minimist = _interopRequireDefault(require("minimist"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -102,6 +106,9 @@ class ProductosController {
 
   createProductos(req, res) {
     return _asyncToGenerator(function* () {
+      var argumentos = (0, _minimist.default)(process.argv.slice(2));
+      var tipo = argumentos.tipo_ds;
+      console.log(tipo);
       var {
         title,
         price,
@@ -115,16 +122,37 @@ class ProductosController {
         return res.status(500).json('invalid Body');
       }
 
-      var date = new Date();
-      var producto = new _productos.ProductoModel({
-        title,
-        price,
-        date,
-        stock,
-        code,
-        description,
-        image
-      });
+      var producto;
+
+      if (tipo == 3) {
+        var productos = yield _datasourceSetting.daoSelect.getAllProductos();
+        console.log(productos);
+        var id = productos.length ? productos.length + 1 : 1;
+
+        var _date = new Date();
+
+        producto = {
+          title,
+          price,
+          date: _date,
+          stock,
+          code,
+          description,
+          image,
+          id
+        };
+      } else {
+        producto = new _productos.ProductoModel({
+          title,
+          price,
+          date,
+          stock,
+          code,
+          description,
+          image
+        });
+      }
+
       var result = yield _datasourceSetting.daoSelect.createProducto(producto);
       /*req.flash('success_msg', 'Producto creado correctamente');
       res.redirect('/api/productos/vista');*/
@@ -157,7 +185,8 @@ class ProductosController {
         });
       }
 
-      var productoOriginal = yield _datasourceSetting.daoSelect.getProductosById(id); //console.log(productoOriginal)
+      var productoOriginal = yield _datasourceSetting.daoSelect.getProductosById(id);
+      console.log(productoOriginal); //console.log(productoOriginal)
 
       if (!productoOriginal) {
         return res.status(404).json({

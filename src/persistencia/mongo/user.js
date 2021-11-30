@@ -1,6 +1,6 @@
 import users from '../../services/users';
 
-class UsersRepository {
+class UserDao {
   async getUser(user) {
     let usuario = await users.findOne({ user: user });
     if (usuario) return usuario;
@@ -19,4 +19,4 @@ class UsersRepository {
   }
 }
 
-export const usersRepository = new UsersRepository();
+export const userDao = new UserDao();

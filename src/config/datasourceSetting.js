@@ -2,7 +2,6 @@ import { DaoFactory } from '../factories/daoFactory';
 import minimist from 'minimist';
 
 const argumentos = minimist(process.argv.slice(2));
-console.log(argumentos);
 const tipo = argumentos.tipo_ds;
 class DaoSelect {
   persistance;

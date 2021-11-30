@@ -18,12 +18,12 @@ require('../../others/mongo');
 class MongoRepository {
   constructor() {
     _defineProperty(this, "getAllProductos", /*#__PURE__*/_asyncToGenerator(function* () {
-      return yield _.productosRepository.getAllproductos();
+      return yield _.productoDao.getAllproductos();
     }));
 
     _defineProperty(this, "getProductosById", /*#__PURE__*/function () {
       var _ref2 = _asyncToGenerator(function* (id) {
-        return yield _.productosRepository.getProductosById(id);
+        return yield _.productoDao.getProductosById(id);
       });
 
       return function (_x) {
@@ -33,7 +33,7 @@ class MongoRepository {
 
     _defineProperty(this, "createProducto", /*#__PURE__*/function () {
       var _ref3 = _asyncToGenerator(function* (producto) {
-        return yield _.productosRepository.createProducto(producto);
+        return yield _.productoDao.createProducto(producto);
       });
 
       return function (_x2) {
@@ -43,7 +43,7 @@ class MongoRepository {
 
     _defineProperty(this, "updateproducto", /*#__PURE__*/function () {
       var _ref4 = _asyncToGenerator(function* (id, producto) {
-        return yield _.productosRepository.update(id, producto);
+        return yield _.productoDao.update(id, producto);
       });
 
       return function (_x3, _x4) {
@@ -53,7 +53,7 @@ class MongoRepository {
 
     _defineProperty(this, "deleteProducto", /*#__PURE__*/function () {
       var _ref5 = _asyncToGenerator(function* (id) {
-        return yield _.productosRepository.delete(id);
+        return yield _.productoDao.delete(id);
       });
 
       return function (_x5) {
@@ -63,7 +63,7 @@ class MongoRepository {
 
     _defineProperty(this, "findAllCarrito", /*#__PURE__*/function () {
       var _ref6 = _asyncToGenerator(function* (user) {
-        return yield _.carritoRepository.findAll(user);
+        return yield _.carritoDao.findAll(user);
       });
 
       return function (_x6) {
@@ -87,7 +87,7 @@ class MongoRepository {
 
     _defineProperty(this, "getUser", /*#__PURE__*/function () {
       var _ref9 = _asyncToGenerator(function* (user) {
-        return yield _.usersRepository.getUser(user);
+        return yield _.userDao.getUser(user);
       });
 
       return function (_x8) {
@@ -97,7 +97,7 @@ class MongoRepository {
 
     _defineProperty(this, "getUserByName", /*#__PURE__*/function () {
       var _ref10 = _asyncToGenerator(function* (name) {
-        return yield _.usersRepository.getUserByName(name);
+        return yield _.userDao.getUserByName(name);
       });
 
       return function (_x9) {
@@ -107,7 +107,7 @@ class MongoRepository {
 
     _defineProperty(this, "createUser", /*#__PURE__*/function () {
       var _ref11 = _asyncToGenerator(function* (user) {
-        return yield _.usersRepository.createUser(user);
+        return yield usersRepository.createUser(user);
       });
 
       return function (_x10) {
@@ -117,7 +117,7 @@ class MongoRepository {
 
     _defineProperty(this, "updateUser", /*#__PURE__*/function () {
       var _ref12 = _asyncToGenerator(function* (id, user) {
-        return yield _.usersRepository.updateUser(id, user);
+        return yield usersRepository.updateUser(id, user);
       });
 
       return function (_x11, _x12) {

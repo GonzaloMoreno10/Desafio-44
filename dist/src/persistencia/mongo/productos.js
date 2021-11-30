@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.productosRepository = void 0;
+exports.productoDao = void 0;
 
 var _productos = require("../../services/productos");
 
@@ -11,7 +11,7 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-class ProductoRepository {
+class ProductoDao {
   getAllproductos() {
     return _asyncToGenerator(function* () {
       var prod = yield _productos.ProductoModel.find();
@@ -45,5 +45,5 @@ class ProductoRepository {
 
 }
 
-var productosRepository = new ProductoRepository();
-exports.productosRepository = productosRepository;
+var productoDao = new ProductoDao();
+exports.productoDao = productoDao;

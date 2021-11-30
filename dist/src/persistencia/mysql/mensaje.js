@@ -11,7 +11,7 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-class MensajesRepository {
+class Mensaje {
   getAllMensajes() {
     return _asyncToGenerator(function* () {
       var connection = yield (0, _mysql.createConnection)();
@@ -36,5 +36,5 @@ class MensajesRepository {
 
 }
 
-var mensajeRepository = new MensajesRepository();
+var mensajeRepository = new Mensaje();
 exports.mensajeRepository = mensajeRepository;
