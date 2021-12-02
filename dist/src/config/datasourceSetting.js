@@ -9,6 +9,8 @@ var _daoFactory = require("../factories/daoFactory");
 
 var _minimist = _interopRequireDefault(require("minimist"));
 
+var _args = require("./args");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -17,8 +19,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var argumentos = (0, _minimist.default)(process.argv.slice(2));
-var tipo = argumentos.tipo_ds;
+var tipo;
+var TIPO_DS = process.env.TIPO_DS;
+
+if (TIPO_DS === 'MEMORY') {
+  tipo = 3;
+} else {
+  tipo = 2;
+}
 
 class DaoSelect {
   constructor() {

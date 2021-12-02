@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.productoRepository = exports.ProductoDao = void 0;
+exports.productoDao = exports.ProductoDao = void 0;
 
 var _mysql = require("../../others/mysql");
 
@@ -62,5 +62,5 @@ class ProductoDao {
 }
 
 exports.ProductoDao = ProductoDao;
-var productoRepository = new ProductoDao();
-exports.productoRepository = productoRepository;
+var productoDao = new ProductoDao();
+exports.productoDao = productoDao;

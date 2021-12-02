@@ -107,7 +107,7 @@ class MongoRepository {
 
     _defineProperty(this, "createUser", /*#__PURE__*/function () {
       var _ref11 = _asyncToGenerator(function* (user) {
-        return yield usersRepository.createUser(user);
+        return yield _.userDao.createUser(user);
       });
 
       return function (_x10) {
@@ -117,7 +117,7 @@ class MongoRepository {
 
     _defineProperty(this, "updateUser", /*#__PURE__*/function () {
       var _ref12 = _asyncToGenerator(function* (id, user) {
-        return yield usersRepository.updateUser(id, user);
+        return yield _.userDao.updateUser(id, user);
       });
 
       return function (_x11, _x12) {

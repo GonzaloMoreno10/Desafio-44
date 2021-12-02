@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.userRepository = exports.UserDao = void 0;
+exports.userDao = exports.UserDao = void 0;
 
 var _mysql = require("../../others/mysql");
 
@@ -63,5 +63,5 @@ class UserDao {
 }
 
 exports.UserDao = UserDao;
-var userRepository = new UserDao();
-exports.userRepository = userRepository;
+var userDao = new UserDao();
+exports.userDao = userDao;

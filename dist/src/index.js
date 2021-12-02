@@ -1,10 +1,5 @@
 "use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.PORT = void 0;
-
 var path = _interopRequireWildcard(require("path"));
 
 var _expressHandlebars = _interopRequireDefault(require("express-handlebars"));
@@ -41,11 +36,15 @@ var _log4js = _interopRequireDefault(require("log4js"));
 
 var _log4js2 = require("./config/log4js");
 
+var _args = require("./config/args.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+var argumentos = (0, _minimist.default)(process.argv.slice(2), _args.argsConfig);
 
 var consoleLogger = _log4js.default.getLogger('consoleLogger');
 
@@ -54,9 +53,9 @@ var publicPath = path.resolve(__dirname, '../../public');
 
 _log4js.default.configure(_log4js2.log4jsConfig);
 
-require('./others/passport.local');
+require('./others/passport.local'); //app.set('port', process.env.PORT || 8080);
 
-app.set('port', process.env.PORT || 8080);
+
 app.set('views', path.resolve(__dirname, '../../src/views'));
 app.engine('.hbs', (0, _expressHandlebars.default)({
   //Configuro handlebars
@@ -102,9 +101,7 @@ app.use('/api', _routes.mainRouter);
 var Server = _http.default.Server(app);
 
 (0, _socketIo.initIo)(Server);
-var argumentos = (0, _minimist.default)(process.argv.slice(2));
-var PORT = argumentos.puerto || 8080;
-exports.PORT = PORT;
+var PORT = argumentos.PORT;
 var clusterMode = argumentos.cluster;
 
 var numCPUs = _os.default.cpus().length;
@@ -123,5 +120,5 @@ if (clusterMode && _cluster.default.isMaster) {
     _cluster.default.fork();
   });
 } else {
-  Server.listen(app.get('port'), () => consoleLogger.info("Servidor express escuchando en el puerto ".concat(app.get('port'), " - PID WORKER ").concat(process.pid)));
+  Server.listen(PORT, () => consoleLogger.info("Servidor express escuchando en el puerto ".concat(PORT, " - PID WORKER ").concat(process.pid)));
 }

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.carritoRepository = exports.CarritoDao = void 0;
+exports.carritoDao = exports.CarritoDao = void 0;
 
 var _mysql = require("../../others/mysql");
 
@@ -23,5 +23,5 @@ class CarritoDao {
 }
 
 exports.CarritoDao = CarritoDao;
-var carritoRepository = new CarritoDao();
-exports.carritoRepository = carritoRepository;
+var carritoDao = new CarritoDao();
+exports.carritoDao = carritoDao;

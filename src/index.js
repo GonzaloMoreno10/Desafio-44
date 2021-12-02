@@ -16,7 +16,8 @@ import os from 'os';
 import cluster from 'cluster';
 import log4js from 'log4js';
 import { log4jsConfig } from './config/log4js';
-
+import { argsConfig } from './config/args.js';
+const argumentos = minimist(process.argv.slice(2), argsConfig);
 const consoleLogger = log4js.getLogger('consoleLogger');
 const app = express();
 const publicPath = path.resolve(__dirname, '../../public');
@@ -25,7 +26,7 @@ log4js.configure(log4jsConfig);
 
 require('./others/passport.local');
 
-app.set('port', process.env.PORT || 8080);
+//app.set('port', process.env.PORT || 8080);
 app.set('views', path.resolve(__dirname, '../../src/views'));
 
 app.engine(
@@ -79,8 +80,7 @@ const Server = http.Server(app);
 
 initIo(Server);
 
-const argumentos = minimist(process.argv.slice(2));
-export const PORT = argumentos.puerto || 8080;
+const PORT = argumentos.PORT;
 
 const clusterMode = argumentos.cluster;
 
@@ -99,11 +99,9 @@ if (clusterMode && cluster.isMaster) {
     cluster.fork();
   });
 } else {
-  Server.listen(app.get('port'), () =>
+  Server.listen(PORT, () =>
     consoleLogger.info(
-      `Servidor express escuchando en el puerto ${app.get(
-        'port',
-      )} - PID WORKER ${process.pid}`,
+      `Servidor express escuchando en el puerto ${PORT} - PID WORKER ${process.pid}`,
     ),
   );
 }

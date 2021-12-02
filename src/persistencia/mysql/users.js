@@ -42,4 +42,4 @@ export class UserDao {
   }
 }
 
-export const userRepository = new UserDao();
+export const userDao = new UserDao();

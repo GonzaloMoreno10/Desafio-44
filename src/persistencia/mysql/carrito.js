@@ -12,4 +12,4 @@ export class CarritoDao {
     return data[0];
   }
 }
-export const carritoRepository = new CarritoDao();
+export const carritoDao = new CarritoDao();

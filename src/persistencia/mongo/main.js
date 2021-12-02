@@ -43,10 +43,10 @@ export class MongoRepository {
   };
 
   createUser = async user => {
-    return await usersRepository.createUser(user);
+    return await userDao.createUser(user);
   };
 
   updateUser = async (id, user) => {
-    return await usersRepository.updateUser(id, user);
+    return await userDao.updateUser(id, user);
   };
 }

@@ -40,4 +40,4 @@ export class ProductoDao {
   }
 }
 
-export const productoRepository = new ProductoDao();
+export const productoDao = new ProductoDao();
