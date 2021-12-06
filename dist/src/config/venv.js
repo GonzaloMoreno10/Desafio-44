@@ -7,21 +7,7 @@ exports.TIPO_DS = exports.ETHEREAL_PASSWORD = exports.ETHEREAL_EMAIL = exports.E
 
 var _dotenv = _interopRequireDefault(require("dotenv"));
 
-var _minimist = _interopRequireDefault(require("minimist"));
-
-var _path = _interopRequireDefault(require("path"));
-
-var _args = require("./args");
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var argumentos = (0, _minimist.default)(process.argv.slice(2), _args.argsConfig);
-/*dotenv.config(
-  path.resolve(
-    __dirname,
-    process.env.NODE_ENV || 'development' + '.env',
-  ),
-);*/
 
 _dotenv.default.config();
 
