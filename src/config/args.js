@@ -6,7 +6,7 @@ export const argsConfig = {
   },
   default: {
     PORT: 3000,
-    tipo_ds: 2,
+    tipo_ds: 1,
     environment: 'dev',
   },
 };

@@ -80,7 +80,7 @@ const Server = http.Server(app);
 
 initIo(Server);
 
-const PORT = argumentos.PORT;
+const PORT = 8080;
 
 const clusterMode = argumentos.cluster;
 

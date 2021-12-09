@@ -101,7 +101,7 @@ app.use('/api', _routes.mainRouter);
 var Server = _http.default.Server(app);
 
 (0, _socketIo.initIo)(Server);
-var PORT = argumentos.PORT;
+var PORT = 8080;
 var clusterMode = argumentos.cluster;
 
 var numCPUs = _os.default.cpus().length;

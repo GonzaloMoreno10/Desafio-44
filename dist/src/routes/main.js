@@ -22,6 +22,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var router = (0, _express.Router)();
 router.use('/axios', _axios.axiosRouter);
 router.use('/productos', _producto.productoRouter);
+router.use('/graphql', _producto.productoRouter);
 router.use('/users', _users.userRouter);
 router.use('/carrito', _carrito.carritoRouter);
 router.get('/processInfo', (req, res) => {

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.TIPO_DS = exports.ETHEREAL_PASSWORD = exports.ETHEREAL_EMAIL = exports.ETHEREAL_NAME = exports.FACEBOOK_SECRET = exports.FACEBOOK_CLIENT_ID = exports.PORT = exports.MONGO_ATLAS_SRV = void 0;
+exports.GRAPHIQL = exports.TIPO_DS = exports.ETHEREAL_PASSWORD = exports.ETHEREAL_EMAIL = exports.ETHEREAL_NAME = exports.FACEBOOK_SECRET = exports.FACEBOOK_CLIENT_ID = exports.PORT = exports.MONGO_ATLAS_SRV = void 0;
 
 var _dotenv = _interopRequireDefault(require("dotenv"));
 
@@ -27,3 +27,5 @@ var ETHEREAL_PASSWORD = process.env.ETHEREAL_PASSWORD;
 exports.ETHEREAL_PASSWORD = ETHEREAL_PASSWORD;
 var TIPO_DS = process.env.TIPO_DS;
 exports.TIPO_DS = TIPO_DS;
+var GRAPHIQL = process.env.GRAPHIQL;
+exports.GRAPHIQL = GRAPHIQL;

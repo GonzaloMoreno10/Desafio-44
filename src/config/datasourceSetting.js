@@ -1,14 +1,9 @@
 import { DaoFactory } from '../factories/daoFactory';
 import minimist from 'minimist';
 import { argsConfig } from './args';
+const argumentos = minimist(process.argv.slice(2), argsConfig);
 
-let tipo;
-const TIPO_DS = process.env.TIPO_DS;
-if (TIPO_DS === 'MEMORY') {
-  tipo = 3;
-} else {
-  tipo = 2;
-}
+const tipo = argumentos.tipo_ds;
 
 class DaoSelect {
   persistance;

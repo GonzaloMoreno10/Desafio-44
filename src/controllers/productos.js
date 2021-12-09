@@ -1,15 +1,9 @@
 import { daoSelect } from '../config/datasourceSetting';
 import { ProductoModel } from '../services/productos';
-import minimist from 'minimist';
 class ProductosController {
-  async getAllproductos(req, res) {
-    let { id } = req.params;
-    if (id) {
-      const producto = await daoSelect.getProductosById(id);
-      return res.status(201).json(producto);
-    }
-    const items = await daoSelect.getAllProductos();
-    return res.status(201).json(items);
+  async getAllproductos() {
+    const productos = await daoSelect.getAllProductos();
+    return productos;
   }
 
   async vistaTest(req, res) {
@@ -57,11 +51,25 @@ class ProductosController {
     });
   }
 
-  async createProductos(req, res) {
-    const argumentos = minimist(process.argv.slice(2));
-    const tipo = argumentos.tipo_ds;
-    console.log(tipo);
-    const { title, price, description, image, stock, code } = req.body;
+  async createProductos({
+    title,
+    price,
+    date,
+    stock,
+    code,
+    description,
+    image,
+  }) {
+    const producto = new ProductoModel({
+      title,
+      price,
+      date,
+      stock,
+      code,
+      description,
+      image,
+    });
+    /*const { title, price, description, image, stock, code } = req.body;
     if (!title && !code) {
       return res.status(500).json('invalid Body');
     }
@@ -91,65 +99,69 @@ class ProductosController {
         description,
         image,
       });
-    }
+    }*/
 
     const result = await daoSelect.createProducto(producto);
 
+    console.log(result);
+
     /*req.flash('success_msg', 'Producto creado correctamente');
     res.redirect('/api/productos/vista');*/
-    return res.status(200).json({
+    /*return res.status(200).json({
       result: 'Producto creado',
       ruta: `http://localhost:8080/api/productos/listar/${
         result._id ? result._id : result.insertId
       }`,
       id: result._id ? result._id : result.insertId,
-    });
+    });*/
+    return result;
   }
 
-  async updateProductos(req, res) {
-    const { title, price, stock, code, description, image } = req.body;
+  async updateProductos({ _id, productos }) {
+    /*const { title, price, stock, code, description, image } = req.body;
 
     const { id } = req.params;
     if (!title || !price || !stock || !code || !description || !image) {
       return res.status(500).json({ msg: 'Invalid body' });
-    }
+    }*/
 
-    const productoOriginal = await daoSelect.getProductosById(id);
+    console.log(_id);
+    const productoOriginal = await daoSelect.getProductosById(_id);
 
     console.log(productoOriginal);
-
     //console.log(productoOriginal)
-    if (!productoOriginal) {
+    /*if (!productoOriginal) {
       return res.status(404).json({
         msg: 'Producto no encontrado',
       });
-    }
+    }*/
 
-    const prod = { title, price, stock, code, description, image };
+    //const prod = { title, price, stock, code, description, image };
 
-    await daoSelect.updateproducto(id, prod);
+    console.log(productos);
+    let prodAct = await daoSelect.updateproducto(_id, { productos });
 
-    const item = await daoSelect.getProductosById(id);
+    //const item = await daoSelect.getProductosById(id);
     /*req.flash('success_msg', 'Producto actualizado correctamente');
     return res.redirect('/api/productos/vista');*/
 
-    return res.status(200).json('Producto actualizado');
+    return prodAct;
   }
 
-  async deleteProductos(req, res) {
-    const { id } = req.params;
+  async deleteProductos({ _id }) {
+    // const { id } = req.params;
 
-    const exist = await daoSelect.getProductosById(id);
+    console.log(_id);
+    const exist = await daoSelect.getProductosById({ _id });
 
-    if (!exist) {
+    /*if (!exist) {
       return res.json('producto no existente');
-    }
-    await daoSelect.deleteProducto(id);
-
-    await daoSelect.deleteProducto(id);
+    }*/
+    const deleteProduct = await daoSelect.deleteProducto({ _id });
     /*req.flash('success_msg', 'Producto Eliminado correctamente');
     res.redirect('/api/productos/vista');*/
-    return res.status(200).json('producto eliminado');
+    console.log(deleteProduct);
+    return deleteProduct;
   }
 }
 

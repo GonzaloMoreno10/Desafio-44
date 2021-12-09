@@ -11,6 +11,8 @@ router.use('/axios', axiosRouter);
 
 router.use('/productos', productoRouter);
 
+router.use('/graphql', productoRouter);
+
 router.use('/users', userRouter);
 
 router.use('/carrito', carritoRouter);

@@ -10,3 +10,4 @@ export const ETHEREAL_NAME = process.env.ETHEREAL_NAME;
 export const ETHEREAL_EMAIL = process.env.ETHEREAL_EMAIL;
 export const ETHEREAL_PASSWORD = process.env.ETHEREAL_PASSWORD;
 export const TIPO_DS = process.env.TIPO_DS;
+export const GRAPHIQL = process.env.GRAPHIQL;

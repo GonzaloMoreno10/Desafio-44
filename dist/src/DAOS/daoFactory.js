@@ -15,12 +15,15 @@ class DaoFactory {
   static get(tipo) {
     switch (tipo) {
       case 1:
+        console.log('Retornando Mongo');
         return new _main2.MongoRepository();
 
       case 2:
+        console.log('Retornando MySql');
         return new _main3.MySqlRepository();
 
       case 3:
+        console.log('Retornando Memory');
         return new _main.MemoryRepository();
 
       default:
